@@ -1,0 +1,11 @@
+#maven ignore
+/.idea/workspace.xml
+/.idea/compiler.xml
+/.idea/misc.xml
+/.idea/copyright
+target/
+src/main/webapp/WEB-INF/classes/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next

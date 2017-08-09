@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace为对应的dao类路径 -->
+<mapper namespace="com.moviedateserver.dao.UserDao">
+    <!--目的:为dao接口方法提供sql语句配置
+    即针对dao接口中的方法编写我们的sql语句-->
+
+    <!--id对应dao的方法名，如果是多参数parameterType不用给，但需要在dao方法的参数前加上@Param("killTime")
+            例如：int reduceNumber(@Param("seckillId") long seckillId, @Param("killTime") Date killTime);-->
+    <!--注意：增删改查对应相应的标签，更新操作对应update标签，插入对应insert，查找对应select，删除对应delete-->
+
+    <!--通过 phone和password 来添加 User-->
+    <insert id="addUserByPhonePsw">
+        <!--当出现主键冲突时(即重复时)，会报错;不想让程序报错，加入ignore-->
+        INSERT ignore INTO user_tab(phone,password)
+        VALUES (#{phone},#{password});
+    </insert>
+
+    <!--通过phone删除User-->
+    <delete id="deleteUserByPhone" parameterType="String">
+        <!--具体SQL语句-->
+        DELETE FROM user_tab
+        WHERE phone=#{phone};
+    </delete>
+
+    <!--通过phone和password更新User密码-->
+    <update id="updatePswByPhonePsw">
+        <!--具体SQL语句-->
+        UPDATE user_tab
+        SET password = #{password}
+        WHERE phone=#{phone} AND password!=#{password};
+    </update>
+
+    <select id="findUserByPhone" resultType="User" parameterType="String">
+        SELECT *
+        FROM user_tab
+        WHERE phone=#{phone}
+    </select>
+
+    <!--查找所有User，并按年龄降序排序好-->
+    <select id="findAllUserDESC" resultType="User">
+        SELECT *
+        FROM user_tab
+        ORDER BY age DESC
+    </select>
+
+
+</mapper>
