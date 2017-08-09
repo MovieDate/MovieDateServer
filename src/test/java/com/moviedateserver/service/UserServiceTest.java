@@ -53,4 +53,15 @@ public class UserServiceTest {
         System.out.println("userList===="+userList);
     }
 
+    @Test
+    public void checkPsw() throws Exception {
+        int flag = userService.checkPassword("18219111600","123456");
+//        System.out.println("密码是否正确==="+user);
+        if (flag == 0) {
+            System.out.println("密码错误==="+flag);
+        }else {
+            System.out.println("密码正确==="+flag);
+        }
+    }
+
 }

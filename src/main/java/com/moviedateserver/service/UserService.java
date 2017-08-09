@@ -35,6 +35,14 @@ public interface UserService {
     int updatePswByPhonePsw(String phone,String password);
 
     /**
+     * 通过phone检验旧密码是否正确
+     * @param phone
+     * @param oldPassword
+     * @return 正确返回1，失败返回0
+     */
+    int checkPassword(String phone,String oldPassword);
+
+    /**
      * 通过phone查询User信息
      * @param phone
      * @return 查找成功返回User，没有则null

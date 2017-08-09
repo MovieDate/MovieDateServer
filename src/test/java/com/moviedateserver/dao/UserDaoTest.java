@@ -57,4 +57,15 @@ public class UserDaoTest {
         }
     }
 
+    @Test
+    public void checkPsw() throws Exception {
+        User user = userDao.checkPassword("18219111600","1234561");
+//        System.out.println("密码是否正确==="+user);
+        if (user == null) {
+            System.out.println("密码错误==="+user);
+        }else {
+            System.out.println("密码正确==="+user);
+        }
+    }
+
 }

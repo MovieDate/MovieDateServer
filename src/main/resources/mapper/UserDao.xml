@@ -39,6 +39,13 @@
         WHERE phone=#{phone}
     </select>
 
+    <!--检测密码是否正确-->
+    <select id="checkPassword" resultType="User">
+        SELECT *
+        FROM user_tab
+        WHERE phone=#{phone} AND password=#{password}
+    </select>
+
     <!--查找所有User，并按年龄降序排序好-->
     <select id="findAllUserDESC" resultType="User">
         SELECT *

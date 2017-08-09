@@ -40,7 +40,7 @@ public class UserController {
 //    private PostService postService;
 
     /**
-     * 查找User表里的所有用户数据，并按年龄降序的方式排序好
+     * 查找User表里的所有用户数据，并按年龄降序的方式排序好（这个方法可能没用，只是例子）
      * 这个方法里没有请求的参数
      * @param response
      * @return
@@ -127,5 +127,63 @@ public class UserController {
         out.close();
         return null;
     }
+
+    /**
+     * 修改密码
+     * @param request
+     * @param response
+     * @return 旧密码是否正确、新旧密码是否相同、密码是否修改成功
+     * @throws IOException
+     * 这些参数就是APP那边请求的参数  HttpServletResponse是用来返回数据的，不是APP那边请求的参数
+     */
+    //@ResponseBody
+    @RequestMapping(value = "/updatePassword")
+    public String updatePassword(HttpServletRequest request, HttpServletResponse response)
+            throws IOException{
+        PrintWriter out = null;
+        try {
+            out = response.getWriter();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //request.getParameter("phone")就是APP端传过来的请求参数
+        String phone = request.getParameter("phone");
+        String oldPsw = request.getParameter("oldPassword");
+        String newPsw = request.getParameter("newPassword");
+
+        //1、先验证旧密码是否正确
+        int checkPsw = userService.checkPassword(phone, oldPsw);
+        if (checkPsw == 1) {
+            System.out.println("密码正确===");
+            //2、新密码和旧密码是否相同
+            if (newPsw.equals(oldPsw)) {
+                System.out.println("新密码和旧密码一样===");
+
+                out.print("password_same");//新密码和旧密码一样时，向APP传输密码一样的信息
+            } else {
+                //3、新旧密码如果不一样，更新密码
+                int updateFlag = userService.updatePswByPhonePsw(phone, newPsw);
+                if (updateFlag==1) {
+                    System.out.println("新密码修改成功===");
+
+                    out.print("updatePsw_success");//密码修改成功时，向APP传输成功的信息
+                } else {
+                    System.out.println("新密码修改失败===");
+
+                    out.print("updatePsw_failure");//密码修改失败时，向APP传输失败的信息
+                }
+            }
+        }else {
+            System.out.println("密码错误===");
+            //密码错误时，向APP传输密码错误的信息，传输回去的信息最好是英文，防止中文出现乱码
+            out.print("password_error");
+        }
+
+        out.flush();
+        out.close();
+        return null;
+    }
+
+
 
 }

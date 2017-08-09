@@ -55,6 +55,24 @@ public class UserServiceImpl implements UserService{
     }
 
     /**
+     * 通过phone检验旧密码是否正确
+     * @param phone
+     * @param oldPassword
+     * @return 正确返回1，错误返回0
+     */
+    public int checkPassword(String phone, String oldPassword) {
+        User user = userDao.checkPassword(phone,oldPassword);
+        if (user == null) {
+            System.out.println("密码错误==="+user);
+            return 0;
+        }else {
+            System.out.println("密码正确==="+user);
+            return 1;
+        }
+    }
+
+
+    /**
      * 通过phone查询User信息
      * @param phone
      * @return 查找成功返回User，没有则null

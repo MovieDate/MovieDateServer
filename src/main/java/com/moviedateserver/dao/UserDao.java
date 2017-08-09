@@ -35,6 +35,14 @@ public interface UserDao {//添加UserDao的test时，选中类名UserDao，右�
     int updatePswByPhonePsw(@Param("phone") String phone, @Param("password")String password);
 
     /**
+     * 通过phone检验旧密码是否正确
+     * @param phone
+     * @param password
+     * @return 正确返回user，失败返回null
+     */
+    User checkPassword(@Param("phone") String phone, @Param("password")String password);
+
+    /**
      * 通过phone查询User信息
      * @param phone
      * @return 查找成功返回User，没有则null
