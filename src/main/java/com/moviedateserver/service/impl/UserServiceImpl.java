@@ -6,6 +6,7 @@ import com.moviedateserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -87,5 +88,12 @@ public class UserServiceImpl implements UserService{
      */
     public List<User> findAllUserDESC() {
         return userDao.findAllUserDESC();
+    }
+
+    /**
+     * 通过id完善用户表
+     */
+    public int updataUser(int id,String name, int gender, int age, String habit, String birthday, String job, String address, String weight, String height, String xingZuo, String signature) {
+        return userDao.updateUser(id,name,gender, age,habit,birthday,job,address,weight,height,xingZuo,signature);
     }
 }

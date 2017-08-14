@@ -14,7 +14,7 @@ public class User {
     private int gender;//性别:男（0）女（1）
     private int age;
     private String habit;//爱好
-    private Date birthday;//生日
+    private String birthday;//生日
     private String job;//职业
     private String address;
     private String weigh;//体重
@@ -86,11 +86,11 @@ public class User {
         this.habit = habit;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 

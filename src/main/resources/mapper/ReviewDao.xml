@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace为对应的dao类路径 -->
+<mapper namespace="com.moviedateserver.dao.ReviewDao">
+    <!--目的:为dao接口方法提供sql语句配置
+    即针对dao接口中的方法编写我们的sql语句-->
+
+    <!--id对应dao的方法名，如果是多参数parameterType不用给，但需要在dao方法的参数前加上@Param("killTime")
+            例如：int reduceNumber(@Param("seckillId") long seckillId, @Param("killTime") Date killTime);-->
+    <!--注意：增删改查对应相应的标签，更新操作对应update标签，插入对应insert，查找对应select，删除对应delete-->
+
+    <!--通过 postId 来添加 -->
+    <insert id="addUserReviewByPostId">
+        <!--当出现主键冲突时(即重复时)，会报错;不想让程序报错，加入ignore-->
+        INSERT ignore INTO review_tab(postId,postPersonId,reviewDetails,reviewTime)
+        VALUES (#{postId},#{postPersonId},#{reviewDetails},#{reviewTime});
+    </insert>
+
+    <!--通过 postId ,postPersonId 来添加评论 -->
+    <update id="updateReviewByPostId">
+        update  review_tab
+        SET reviewDetails=#{reviewDetails}
+        WHERE postId=#{postId} AND postPersonId=#{postPersonId}
+    </update>
+
+    <!--通过 reviewDetails删除评论-->
+    <delete id="deleteReviewByReviewDetails" parameterType="String">
+        <!--具体SQL语句-->
+        DELETE FROM review_tab
+        WHERE reviewDetails=#{reviewDetails};
+    </delete>
+
+    <!--通过reviewDetails 查询信息 -->
+    <select id="findReviewByReviewDetails" resultType="Review" parameterType="String">
+        SELECT *
+        FROM review_tab
+        WHERE reviewDetails=#{reviewDetails};
+    </select>
+
+</mapper>

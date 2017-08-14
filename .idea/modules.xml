@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MovieDateServer.iml" filepath="$PROJECT_DIR$/MovieDateServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/moviedateserver.iml" filepath="$PROJECT_DIR$/moviedateserver.iml" />
     </modules>
   </component>
 </project>

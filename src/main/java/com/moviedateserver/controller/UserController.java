@@ -37,7 +37,6 @@ public class UserController {
     private UserService userService;
 
 //    @Autowired
-//    private PostService postService;
 
     /**
      * 查找User表里的所有用户数据，并按年龄降序的方式排序好（这个方法可能没用，只是例子）

@@ -3,6 +3,7 @@ package com.moviedateserver.dao;
 import com.moviedateserver.entity.User;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,5 +55,13 @@ public interface UserDao {//添加UserDao的test时，选中类名UserDao，右�
      * @return
      */
     List<User> findAllUserDESC();
+
+    /*
+    * 完善资料时，输入全部信息
+    * */
+    int updateUser(@Param("id")int id,@Param("name") String name, @Param("gender")int gender, @Param("age")int age,
+                   @Param("habit")String habit, @Param("birthday")String birthday, @Param("job")String job,
+                   @Param("address")String address, @Param("weight")String weight, @Param("height")String height,
+                   @Param("xingZuo")String xingZuo, @Param("signature")String signature);
 
 }

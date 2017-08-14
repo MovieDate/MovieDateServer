@@ -53,5 +53,12 @@
         ORDER BY age DESC
     </select>
 
+    <!--填写资料时传入全部数据-->
+    <update id="updateUser">
+         update  user_tab
+         SET name=#{name},gender=#{gender},age=#{age},habit=#{habit},birthday=#{birthday},job=#{job},address=#{address},weight=#{weight},height=#{height},xingZuo=#{xingZuo},signature=#{signature}
+         WHERE id=#{id}
+    </update>
+
 
 </mapper>

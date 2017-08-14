@@ -64,4 +64,10 @@ public class UserServiceTest {
         }
     }
 
+    @Test
+    public void updateUser() throws Exception {
+        int flag = userService.updataUser(1,"abc",1,18,"运动","20170203","工作","廉江","65kg","175cm","处女座","无");
+        System.out.println("更新返回==" + flag);
+    }
+
 }
