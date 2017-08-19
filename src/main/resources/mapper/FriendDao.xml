@@ -18,6 +18,12 @@
         VALUES (#{myId},#{friendId},#{addTime});
     </insert>
 
+    <!--通过 friendId 来删除-->
+    <delete id="delFriendByFriendId">
+        DELETE FROM friend_tab
+        WHERE friendId=#{friendId};
+    </delete>
+
     <!--通过 myId 查询信息 -->
     <select id="findFriendByMyId" resultType="Friend" parameterType="int">
         SELECT *

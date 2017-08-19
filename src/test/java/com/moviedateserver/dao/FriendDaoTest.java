@@ -25,6 +25,12 @@ public class FriendDaoTest {
     }
 
     @Test
+    public void delFriendByFriendId() throws Exception{
+        int deleteAmount = friendDao.delFriendByFriendId(3);
+        System.out.println("操作后返回删除的数目：" + deleteAmount);
+    }
+
+    @Test
     public void findFriendByMyId() throws Exception {
         List<Friend> friendList = friendDao.findFriendByMyId(1);
         System.out.println("user===" + friendList);

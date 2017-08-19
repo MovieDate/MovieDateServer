@@ -26,6 +26,8 @@ public class PostServiceImpl implements PostService {
         return postDao.updatePostById(id,postPersonId,postTime,site,movieName,movieTime,sex,endTime,movieType,details);
     }
 
+    public Post findPostByid(int id){return  postDao.findPostByid(id);}
+
     public List<Post> findPostBymovieName(String movieName) {
         return postDao.findPostBymovieName(movieName);
     }

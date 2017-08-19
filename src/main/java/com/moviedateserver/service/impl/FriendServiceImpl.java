@@ -17,6 +17,10 @@ public class FriendServiceImpl implements FriendService{
         return friendDao.addFriendByMyId(myId,friendId,addTime);
     }
 
+    public int delFriendByFriendId(int friendId) {
+        return friendDao.delFriendByFriendId(friendId);
+    }
+
     public List<Friend> findFriendByMyId(int myId) {
         return friendDao.findFriendByMyId(myId);
     }

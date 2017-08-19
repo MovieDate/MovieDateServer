@@ -10,12 +10,12 @@ public interface ReviewDao {
     int addUserReviewByPostId(@Param("postId")int postId, @Param("postPersonId")int postPersonId,
                               @Param("reviewDetails")String reviewDetails, @Param("reviewTime")String reviewTime);
 
-   /* 通过 postId ,postPersonId 来添加评论 */
+   /* 通过 postId ,postPersonId 来更新评论 */
    int updateReviewByPostId(@Param("postId")int postId, @Param("postPersonId")int postPersonId,
                             @Param("reviewDetails")String reviewDetails);
 
    /*通过 reviewDetails删除评论*/
-   int deleteReviewByReviewDetails(String reviewDetails);
+   int deleteReviewByReviewDetails(@Param("reviewDetails")String reviewDetails,@Param("postPersonId")int postPersonId);
 
    /*通过reviewDetails 查询信息 */
    List<Review> findReviewByReviewDetails(String reviewDetails);

@@ -12,7 +12,7 @@ public interface ReviewService {
     int updateReviewByPostId(int postId,int postPersonId,String reviewDetails);
 
     /*通过 reviewDetails删除评论*/
-    int deleteReviewByReviewDetails(String reviewDetails);
+    int deleteReviewByReviewDetails(String reviewDetails,int postPersonId);
 
     /*通过reviewDetails 查询信息 */
     List<Review> findReviewByReviewDetails(String reviewDetails);

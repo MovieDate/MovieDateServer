@@ -24,6 +24,12 @@ public class FriendServiceTest {
     }
 
     @Test
+    public void delFriendByFriendId() throws Exception{
+        int deleteAmount = friendService.delFriendByFriendId(3);
+        System.out.println("操作后返回删除的数目：" + deleteAmount);
+    }
+
+    @Test
     public void findFriendByMyId() throws Exception {
         List<Friend> friendList = friendService.findFriendByMyId(1);
         System.out.println("user===" + friendList);

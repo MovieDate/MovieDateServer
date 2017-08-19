@@ -32,7 +32,7 @@ public class ReviewServiceTest {
 
     @Test
     public void deleteReviewByReviewDetails() throws Exception {
-        int deleteAmount = reviewService.deleteReviewByReviewDetails("评论");
+        int deleteAmount = reviewService.deleteReviewByReviewDetails("评论",2);
         System.out.println("操作后返回删除的数目：" + deleteAmount);
     }
 

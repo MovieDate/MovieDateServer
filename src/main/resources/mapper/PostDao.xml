@@ -34,6 +34,11 @@
     </update>
 
     <!--通过地点or 约影的影片名字 or约影地点 or发帖内容 -->
+    <select id="findPostByid" resultType="Post" parameterType="int">
+        SELECT *
+        FROM post_tab
+        WHERE id=#{id};
+    </select>
     <select id="findPostBymovieName" resultType="Post" parameterType="String">
         SELECT *
         FROM post_tab

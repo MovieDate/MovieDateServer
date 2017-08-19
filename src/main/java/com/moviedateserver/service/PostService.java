@@ -23,8 +23,10 @@ public interface PostService {
                             String movieTime,int sex,String endTime,int movieType,String details);
 
     /**
-     *通过地点or 约影的影片名字 or约影地点 or发帖内容
+     *通过id or 地点 or 约影的影片名字 or约影地点 or发帖内容
      */
+    Post findPostByid(int id);
+
     List<Post> findPostBymovieName(String movieName);
 
     List<Post> findPostBysite(String site);

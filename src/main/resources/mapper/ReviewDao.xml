@@ -29,7 +29,7 @@
     <delete id="deleteReviewByReviewDetails" parameterType="String">
         <!--具体SQL语句-->
         DELETE FROM review_tab
-        WHERE reviewDetails=#{reviewDetails};
+        WHERE reviewDetails=#{reviewDetails} AND postPersonId=#{postPersonId};
     </delete>
 
     <!--通过reviewDetails 查询信息 -->

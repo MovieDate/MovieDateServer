@@ -21,8 +21,8 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewDao.updateReviewByPostId(postId,postPersonId,reviewDetails);
     }
 
-    public int deleteReviewByReviewDetails(String reviewDetails) {
-        return reviewDao.deleteReviewByReviewDetails(reviewDetails);
+    public int deleteReviewByReviewDetails(String reviewDetails,int postPersonId) {
+        return reviewDao.deleteReviewByReviewDetails(reviewDetails,postPersonId);
     }
 
     public List<Review> findReviewByReviewDetails(String reviewDetails) {

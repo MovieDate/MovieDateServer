@@ -33,8 +33,13 @@ public class PostDaoTest {
     @Test
     public void updatePostById() throws Exception {
         int updateAmount = postDao.updatePostById(2,2,"20170103","江门","战狼2","20170104",0,"20170105",0,"哈哈哈");
-
         System.out.println("更新操作后返回的数目：" + updateAmount);
+    }
+
+    @Test
+    public void findPostByid()throws Exception{
+        Post post =postDao.findPostByid(1);
+        System.out.println("post=="+post);
     }
 
     @Test

@@ -7,6 +7,8 @@ import java.util.List;
 public interface FriendService {
     /* 通过 myId 来添加 */
     int addFriendByMyId(int myId,int friendId, String addTime);
+    /* 通过 friendId 来删除 */
+    int delFriendByFriendId(int friendId);
     /**
      *通过 myId 查询信息
      */

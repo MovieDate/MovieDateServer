@@ -37,6 +37,12 @@ public class PostServiceTest {
     }
 
     @Test
+    public void findPostByid()throws Exception{
+        Post post =postService.findPostByid(1);
+        System.out.println("post=="+post);
+    }
+
+    @Test
     public void findPostBymovieName() throws Exception {
         List<Post> postList = postService.findPostBymovieName("战狼");
         System.out.println("user===" + postList);

@@ -29,9 +29,12 @@ public interface PostDao {
                             @Param("sex")int sex, @Param("endTime")String endTime,
                             @Param("movieType")int movieType, @Param("details")String details);
 
+
     /**
-     *通过地点or 约影的影片名字 or约影地点 or发帖内容
+     *通过 id or 地点or 约影的影片名字 or约影地点 or发帖内容
      */
+    Post findPostByid(int id);
+
     List<Post> findPostBymovieName(String movieName);
 
     List<Post> findPostBysite(String site);
