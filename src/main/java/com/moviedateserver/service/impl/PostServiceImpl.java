@@ -14,6 +14,10 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private PostDao postDao;
 
+    public List<Post> findAllPost() {
+        return postDao.findAllPost();
+    }
+
     public int addPostByPostPersonId(int postPersonId, String postTime, String site, String movieName, String movieTime, int sex, String endTime, int movieType, String details) {
         return postDao.addPostByPostPersonId(postPersonId,postTime,site,movieName,movieTime,sex,endTime,movieType,details);
     }

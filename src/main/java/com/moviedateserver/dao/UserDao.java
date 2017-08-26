@@ -12,13 +12,21 @@ import java.util.List;
  */
 public interface UserDao {//添加UserDao的test时，选中类名UserDao，右键go to->test-创建->选择Junit4,选择添加的测试方法，finish
 
+    /**登录
+     * 通过 phone和password 来登录 User
+     * @param phone
+     * @param password
+     */
+    User loginByPhonePsw(@Param("phone") String phone,@Param("password") String password);
+
+
     /**注册会用到
      * 通过 phone和password 来添加 User
      * @param phone
      * @param password
      * @return 插入的行数
      */
-    int addUserByPhonePsw(@Param("phone") String phone,@Param("password") String password);
+    int addUserByPhonePsw(@Param("phone") String phone,@Param("password") String password,@Param("name")String name,@Param("gender")int gender);
 
     /**
      * 通过phone删除User
@@ -34,6 +42,13 @@ public interface UserDao {//添加UserDao的test时，选中类名UserDao，右�
      * @return 更新成功返回1，失败返回0
      */
     int updatePswByPhonePsw(@Param("phone") String phone, @Param("password")String password);
+
+    /*
+    *通过id修改手机号码
+    * @param phone
+    * @param id
+    * */
+    int updatePhoneById(@Param("phone")String phone,@Param("id")int id);
 
     /**
      * 通过phone检验旧密码是否正确
@@ -59,7 +74,7 @@ public interface UserDao {//添加UserDao的test时，选中类名UserDao，右�
     /*
     * 完善资料时，输入全部信息
     * */
-    int updateUser(@Param("id")int id,@Param("name") String name, @Param("gender")int gender, @Param("age")int age,
+    int updateUser(@Param("phone")String phone,@Param("name") String name,@Param("nickname") String nickname, @Param("gender")int gender, @Param("age")int age,
                    @Param("habit")String habit, @Param("birthday")String birthday, @Param("job")String job,
                    @Param("address")String address, @Param("weight")String weight, @Param("height")String height,
                    @Param("xingZuo")String xingZuo, @Param("signature")String signature);

@@ -26,14 +26,26 @@ public class UserServiceImpl implements UserService{
 //    @Autowired
 //    private UserDao userDao;
 
+
+    public int loginByPhonePsw(String phone, String password) {
+        User user = userDao.loginByPhonePsw(phone,password);
+        if (user == null) {
+            System.out.println("密码错误==="+user);
+            return 0;
+        }else {
+            System.out.println("密码正确==="+user);
+            return 1;
+        }
+    }
+
     /**注册会用到
      * 通过 phone和password 来添加 User
      * @param phone
      * @param password
      * @return 插入的行数
      */
-    public int addUserByPhonePsw(String phone, String password) {
-        return userDao.addUserByPhonePsw(phone,password);
+    public int addUserByPhonePsw(String phone, String password,String name,int gender) {
+        return userDao.addUserByPhonePsw(phone,password,name,gender);
     }
 
     /**
@@ -53,6 +65,16 @@ public class UserServiceImpl implements UserService{
      */
     public int updatePswByPhonePsw(String phone, String password) {
         return userDao.updatePswByPhonePsw(phone,password);
+    }
+
+    /*
+    *通过id修改手机号码
+    * @param phone
+    * @param id
+    * * @return 更新成功返回1，失败返回0
+    * */
+    public int updatePhoneById(String phone,int id){
+        return userDao.updatePhoneById(phone,id);
     }
 
     /**
@@ -91,9 +113,9 @@ public class UserServiceImpl implements UserService{
     }
 
     /**
-     * 通过id完善用户表
+     * 通过手机完善用户表
      */
-    public int updataUser(int id,String name, int gender, int age, String habit, String birthday, String job, String address, String weight, String height, String xingZuo, String signature) {
-        return userDao.updateUser(id,name,gender, age,habit,birthday,job,address,weight,height,xingZuo,signature);
+    public int updataUser(String phone,String name,String nickname, int gender, int age, String habit, String birthday, String job, String address, String weight, String height, String xingZuo, String signature) {
+        return userDao.updateUser(phone,name,nickname,gender, age,habit,birthday,job,address,weight,height,xingZuo,signature);
     }
 }

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.moviedateserver.entity.User;
 import com.moviedateserver.service.UserService;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,7 +37,35 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-//    @Autowired
+    /**登录
+     * 通过 phone和password 来登录 User
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/loginByPhonePsw")
+    public String loginByPhonePsw(HttpServletRequest request, HttpServletResponse response)
+            throws IOException{
+
+        PrintWriter out = null;
+        //request.getParameter("phone")就是APP端传过来的请求参数
+        String phone = request.getParameter("phone");
+        String password =request.getParameter("password");
+
+        out = response.getWriter();
+        int checkPsw = userService.loginByPhonePsw(phone, password);
+        if (checkPsw == 1) {
+            out.print("login_success");
+        }
+        else {
+            out.print("login_failed");
+        }
+
+        out.flush();
+        out.close();
+        return null;
+    }
 
     /**
      * 查找User表里的所有用户数据，并按年龄降序的方式排序好（这个方法可能没用，只是例子）
@@ -127,6 +156,33 @@ public class UserController {
         return null;
     }
 
+    /*
+    * 注册，添加用户
+    *  @param request
+    *  @param response
+    *  @throws IOException
+    * */
+    @RequestMapping(value = "/addUserByPhonePsw")
+    public String addUserByPhonePsw(HttpServletRequest request,HttpServletResponse response) throws IOException{
+        PrintWriter out =null;
+        out =response.getWriter();
+        String phone = request.getParameter("phone");
+        String password = request.getParameter("password");
+        String name = request.getParameter("name");
+        String sgender = request.getParameter("gender");
+        int gender =Integer.parseInt(sgender);
+        int addFlag=userService.addUserByPhonePsw(phone,password,name,gender);
+        if (addFlag==1){
+            out.print("add_success");
+        }else {
+            out.print("add_failed");
+        }
+
+        out.flush();
+        out.close();
+        return  null;
+    }
+
     /**
      * 修改密码
      * @param request
@@ -176,6 +232,63 @@ public class UserController {
             System.out.println("密码错误===");
             //密码错误时，向APP传输密码错误的信息，传输回去的信息最好是英文，防止中文出现乱码
             out.print("password_error");
+        }
+
+        out.flush();
+        out.close();
+        return null;
+    }
+
+    /*
+    * 通过id修改手机号码
+    * */
+    @RequestMapping(value = "/updatePhoneById")
+    public String updatePhoneById(HttpServletResponse response,HttpServletRequest request)throws IOException{
+        PrintWriter out=null;
+        out =response.getWriter();
+        String phone= request.getParameter("phone");
+        String sid=request.getParameter("id");
+        int id=Integer.parseInt(sid);
+        int updFlag=userService.updatePhoneById(phone,id);
+        if (updFlag==1){
+            out.print("update_success");
+        }else {
+            out.print("update_faild");
+        }
+
+        out.flush();
+        out.close();
+        return null;
+    }
+
+
+    /*
+    * 完善用户表
+    * */
+    @RequestMapping(value = "/updateUser")
+    public String updateUser(HttpServletRequest request,HttpServletResponse response)throws  IOException{
+        PrintWriter out =null;
+        out =response.getWriter();
+        String name= request.getParameter("name");
+        String nickname= request.getParameter("nickname");
+        String sage= request.getParameter("age");
+        int age =Integer.parseInt(sage);
+        String sgender= request.getParameter("gender");
+        int gender =Integer.parseInt(sgender);
+        String phone= request.getParameter("phone");
+        String address= request.getParameter("address");
+        String signature= request.getParameter("signature");
+        String birthday= request.getParameter("birthday");
+        String xingZuo= request.getParameter("xingZuo");
+        String height= request.getParameter("height");
+        String weight= request.getParameter("weight");
+        String job= request.getParameter("job");
+        String habit =request.getParameter("habit");
+        int upaFlag=userService.updataUser(phone,name,nickname,gender,age,habit,birthday,job,address,weight,height,xingZuo,signature);
+        if (upaFlag==1){
+            out.print("add_success");
+        }else {
+            out.print("add_failed");
         }
 
         out.flush();

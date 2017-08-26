@@ -6,6 +6,11 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface PostDao {
+
+    /*
+    * 查找所有的帖子
+    * */
+    List<Post> findAllPost();
     /**
      * 通过postpersonid传入数据库
      */

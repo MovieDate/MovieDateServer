@@ -1,5 +1,7 @@
 package com.moviedateserver.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.moviedateserver.entity.Post;
 import com.moviedateserver.service.PostService;
@@ -20,6 +22,37 @@ import java.util.List;
 public class PostController {
     @Autowired
     private PostService postService;
+
+    /*
+    * 查找所有的post
+    * */
+    @RequestMapping(value = "/findAllPost")
+    public String findAllPost(HttpServletRequest request, HttpServletResponse response)throws IOException {
+        PrintWriter out =null;
+        out = response.getWriter();
+        List<Post> postList = postService.findAllPost();
+        if (postList != null && postList.size() > 0) {
+            //将List转换成json数据
+            JSONArray jsonArray = new JSONArray();
+            for (Post post : postList) {
+                JSONObject jsonObj = (JSONObject) JSON.toJSON(post);
+                jsonArray.add(jsonObj);
+            }
+
+            System.out.println("userList===="+postList);
+            System.out.println("jsonArry===="+jsonArray);
+            //获取到数据不为空时，向APP传输UserList的json数据
+            out.print(jsonArray.toString());
+
+        }else {
+            //获取到数据为空时，向APP传输没有找到数据的信号
+            out.print("nodata");
+        }
+
+        out.flush();
+        out.close();
+        return null;//这里返回空就行
+    }
 
     /**
      * 添加帖子/更新

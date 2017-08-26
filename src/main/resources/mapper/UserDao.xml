@@ -11,11 +11,20 @@
             例如：int reduceNumber(@Param("seckillId") long seckillId, @Param("killTime") Date killTime);-->
     <!--注意：增删改查对应相应的标签，更新操作对应update标签，插入对应insert，查找对应select，删除对应delete-->
 
+    <!--通过 phone和password 来登录-->
+    <select id="loginByPhonePsw" resultType="User">
+        SELECT *
+        FROM user_tab
+        WHERE phone=#{phone} AND password=#{password}
+
+    </select>
+
+
     <!--通过 phone和password 来添加 User-->
     <insert id="addUserByPhonePsw">
         <!--当出现主键冲突时(即重复时)，会报错;不想让程序报错，加入ignore-->
-        INSERT ignore INTO user_tab(phone,password)
-        VALUES (#{phone},#{password});
+        INSERT ignore INTO user_tab(phone,password,name,gender)
+        VALUES (#{phone},#{password},#{name},#{gender});
     </insert>
 
     <!--通过phone删除User-->
@@ -31,6 +40,13 @@
         UPDATE user_tab
         SET password = #{password}
         WHERE phone=#{phone} AND password!=#{password};
+    </update>
+
+    <!--通过id修改手机号码-->
+    <update id="updatePhoneById">
+        UPDATE user_tab
+        SET phone=#{phone}
+        WHERE id=#{id}
     </update>
 
     <select id="findUserByPhone" resultType="User" parameterType="String">
@@ -56,8 +72,8 @@
     <!--填写资料时传入全部数据-->
     <update id="updateUser">
          update  user_tab
-         SET name=#{name},gender=#{gender},age=#{age},habit=#{habit},birthday=#{birthday},job=#{job},address=#{address},weight=#{weight},height=#{height},xingZuo=#{xingZuo},signature=#{signature}
-         WHERE id=#{id}
+         SET name=#{name},nickname=#{nickname},gender=#{gender},age=#{age},habit=#{habit},birthday=#{birthday},job=#{job},address=#{address},weight=#{weight},height=#{height},xingZuo=#{xingZuo},signature=#{signature}
+         WHERE phone=#{phone}
     </update>
 
 

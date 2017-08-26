@@ -26,8 +26,19 @@ public class UserDaoTest {
     private UserDao userDao;//有红色波浪线，不用管它
 
     @Test
+    public void loginByPhonePsw() throws Exception {
+        User user = userDao.loginByPhonePsw("18219111600","1234561");
+//        System.out.println("密码是否正确==="+user);
+        if (user == null) {
+            System.out.println("密码错误==="+user);
+        }else {
+            System.out.println("密码正确==="+user);
+        }
+    }
+
+    @Test
     public void addUserByPhonePsw() throws Exception {
-        int addAmount = userDao.addUserByPhonePsw("18219111601","123456");
+        int addAmount = userDao.addUserByPhonePsw("18219111601","123456","xzc",0);
         System.out.println("操作后返回插入的数目：" + addAmount);
     }
 
@@ -41,6 +52,12 @@ public class UserDaoTest {
     public void updatePswByPhonePsw() throws Exception {
         int updateAmount = userDao.updatePswByPhonePsw("18219111603","123456");
         System.out.println("更新操作后返回的数目：" + updateAmount);
+    }
+
+    @Test
+    public void updatePhoneById()throws Exception{
+        int upaAmount =userDao.updatePhoneById("13423722209",33);
+        System.out.println("更新操作后返回的数目：" + upaAmount);
     }
 
     @Test
@@ -66,6 +83,12 @@ public class UserDaoTest {
         }else {
             System.out.println("密码正确==="+user);
         }
+    }
+
+    @Test
+    public void updateUser() throws Exception {
+        int flag = userDao.updateUser("13066209191","abc","aaa",1,18,"运动","20170203","工作","廉江","65kg","175cm","处女座","无");
+        System.out.println("更新返回==" + flag);
     }
 
 }

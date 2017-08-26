@@ -11,6 +11,13 @@ import java.util.List;
  */
 public interface UserService {
 
+    /**登录
+     * 通过 phone和password 来登录 User
+     * @param phone
+     * @param password
+     */
+    int loginByPhonePsw(String phone,String password);
+
     /**
      * 注册会用到
      * 通过 phone和password 来添加 User
@@ -19,7 +26,7 @@ public interface UserService {
      * @param password
      * @return 插入的行数
      */
-    int addUserByPhonePsw(String phone, String password);
+    int addUserByPhonePsw(String phone, String password,String name,int gender);
 
     /**
      * 通过phone删除User
@@ -37,6 +44,15 @@ public interface UserService {
      * @return 更新成功返回1，失败返回0
      */
     int updatePswByPhonePsw(String phone, String password);
+
+     /*
+    *通过id修改手机号码
+    * @param phone
+    * @param id
+    * */
+     int updatePhoneById(String phone,int id);
+
+
 
     /**
      * 通过phone检验旧密码是否正确
@@ -64,7 +80,7 @@ public interface UserService {
 
 
     /**
-     * 通过id完善用户表
+     * 通过phone完善用户表
      */
-    int updataUser(int id,String name, int gender, int age, String habit, String birthday, String job, String address, String weight, String height, String xingZuo, String signature);
+    int updataUser(String phone,String name,String nickname, int gender, int age, String habit, String birthday, String job, String address, String weight, String height, String xingZuo, String signature);
 }
