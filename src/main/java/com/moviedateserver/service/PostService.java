@@ -15,7 +15,7 @@ public interface PostService {
      * 通过postpersonid传入数据库
      */
     int addPostByPostPersonId(int postPersonId,String postTime,String site,String movieName,
-                              String movieTime,int sex,String endTime,int movieType,String details);
+                              String movieTime,int sex,int movieType,String details);
 
     /**
      *通过 id 删除帖子,因为一个postpersonid可以有多个帖子，但是一次只要求删一个

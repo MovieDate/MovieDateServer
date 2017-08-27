@@ -20,7 +20,7 @@ public class PostDaoTest {
 
     @Test
     public void addPostByPostPersonId() throws Exception {
-        int addAmount = postDao.addPostByPostPersonId(2,"20170103","廉江","战狼2","20170104",0,"20170105",0,"666");
+        int addAmount = postDao.addPostByPostPersonId(2,"20170103","廉江","战狼2","20170104",0,0,"666");
         System.out.println("操作后返回插入的数目：" + addAmount);
     }
 

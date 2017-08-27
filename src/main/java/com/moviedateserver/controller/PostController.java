@@ -80,7 +80,6 @@ public class PostController {
         String site =request.getParameter("site");
         String movieName=request.getParameter("movieName");
         String movieTime=request.getParameter("movieTime");
-        String endTime=request.getParameter("endTime");
         String ssex=request.getParameter("sex");
         int sex =Integer.parseInt(ssex);
         String smovieType=request.getParameter("movieType");
@@ -88,12 +87,11 @@ public class PostController {
         String details=request.getParameter("details");
 
         System.out.println(" postPersonId="+spostPersonId+"postTime"+postTime+
-                " site="+site+" movieName="+movieName+" movieTime="+movieTime+" endTime="
-                +endTime+" sex="+sex+" movieType="+movieType+" details="+details);
+                " site="+site+" movieName="+movieName+" movieTime="+movieTime+" sex="+sex+" movieType="+movieType+" details="+details);
 
         /*Post post=postService.findPostByid(id);
         if (post==null){*/
-            int addFlag = postService.addPostByPostPersonId(postPersonId,postTime,site,movieName,movieTime,sex,endTime,movieType,details);
+            int addFlag = postService.addPostByPostPersonId(postPersonId,postTime,site,movieName,movieTime,sex,movieType,details);
             if (addFlag == 1) {
                 System.out.println("添加成功");
 

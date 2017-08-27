@@ -17,8 +17,7 @@ public interface PostDao {
     int addPostByPostPersonId(@Param("postPersonId")int postPersonId,@Param("postTime")String postTime,
                               @Param("site")String site,@Param("movieName")String movieName,
                               @Param("movieTime")String movieTime,@Param("sex")int sex,
-                              @Param("endTime")String endTime,@Param("movieType")int movieType,
-                              @Param("details")String details);
+                             @Param("movieType")int movieType, @Param("details")String details);
 
     /**
     *通过 id 删除帖子,因为一个postpersonid可以有多个帖子，但是一次只要求删一个
