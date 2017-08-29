@@ -212,6 +212,41 @@ public class PostController {
      * @return
      * @throws IOException
      */
+    @RequestMapping(value = "/findPostByid")
+    public String findPostByid(HttpServletRequest request, HttpServletResponse response)
+            throws IOException{
+
+
+        PrintWriter out = null;
+        try {
+            out = response.getWriter();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String sid = request.getParameter("id");
+        int id=Integer.parseInt(sid);
+
+        Post post = new Post();
+        post = postService.findPostByid(id);
+        if (post != null) {
+            JSONObject jsonObject = new JSONObject();
+            String postJson = jsonObject.toJSONString(post);
+
+            System.out.println("post====" + post);
+            System.out.println("postJson====" + postJson);
+
+            //获取到的数据传过去APP端
+            out.print(postJson);
+        } else {
+            //获取到数据为空时，向APP传输没有找到数据的信号
+            out.print("nodata");
+        }
+
+        out.flush();
+        out.close();
+        return null;
+    }
+
     @RequestMapping(value = "/findPostBymovieName")
     public String findPostBymovieName(HttpServletRequest request,HttpServletResponse response)throws IOException{
 
@@ -250,7 +285,7 @@ public class PostController {
 
         String site=request.getParameter("site");
 
-        List<Post> postList=postService.findPostBymovieName(site);
+        List<Post> postList=postService.findPostBysite(site);
         out =response.getWriter();
         if (postList != null && postList.size() > 0) {
             JSONObject jsonObject = new JSONObject();
@@ -280,7 +315,7 @@ public class PostController {
 
         String details=request.getParameter("details");
 
-        List<Post> postList=postService.findPostBymovieName(details);
+        List<Post> postList=postService.findPostBydetails(details);
         out =response.getWriter();
         if (postList != null && postList.size() > 0) {
             JSONObject jsonObject = new JSONObject();

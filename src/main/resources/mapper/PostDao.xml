@@ -62,4 +62,6 @@
         WHERE details=#{details};
     </select>
 
+
+
 </mapper>
