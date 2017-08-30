@@ -63,7 +63,7 @@ public class CollectController {
             }
         } else {
 
-            out.print("add_faild");
+            out.print("hasadd");
         }
 
         out.flush();

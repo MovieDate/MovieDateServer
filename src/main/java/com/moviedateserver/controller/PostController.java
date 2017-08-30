@@ -247,6 +247,8 @@ public class PostController {
         return null;
     }
 
+
+
     @RequestMapping(value = "/findPostBymovieName")
     public String findPostBymovieName(HttpServletRequest request,HttpServletResponse response)throws IOException{
 

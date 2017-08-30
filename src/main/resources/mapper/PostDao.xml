@@ -46,6 +46,11 @@
         FROM post_tab
         WHERE id=#{id};
     </select>
+    <select id="findPostByid2" resultType="Post" parameterType="int">
+        SELECT *
+        FROM post_tab
+        WHERE id ARE IN ();
+    </select>
     <select id="findPostBymovieName" resultType="Post" parameterType="String">
         SELECT *
         FROM post_tab
