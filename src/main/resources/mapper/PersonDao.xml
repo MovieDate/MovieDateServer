@@ -25,4 +25,11 @@
         WHERE postId=#{postId};
     </select>
 
+    <!--通过postId和byPersonId验证是否已经报名约影-->
+    <select id="findPersobByPostpersonId" resultType="Person" parameterType="int">
+        SELECT *
+        FROM person_tab
+        WHERE postId=#{postId} AND byPersonId=#{byPersonId};
+    </select>
+
 </mapper>

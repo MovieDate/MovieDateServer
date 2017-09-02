@@ -1,8 +1,15 @@
 package com.moviedateserver.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.moviedateserver.entity.Collect;
+import com.moviedateserver.entity.CollectList;
+import com.moviedateserver.entity.Post;
+import com.moviedateserver.entity.User;
 import com.moviedateserver.service.CollectService;
+import com.moviedateserver.service.PostService;
+import com.moviedateserver.service.UserService;
 import com.moviedateserver.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +28,10 @@ import java.util.List;
 public class CollectController {
     @Autowired
     private CollectService collectService;
+    @Autowired
+    private PostService postService;
+    @Autowired
+    private UserService userService;
 
     /**
      * 收藏帖子（点击收藏按钮，添加收藏和取消收藏就这一个接口就行）
@@ -49,11 +61,11 @@ public class CollectController {
 
         System.out.println("postId="+spostId+" collecterId="+scollecterId+" collectTime="+collectTime);
 
-        List<Collect> collectList=collectService.findCollectByCollecterId(collecterId);
+        Collect collect=collectService.findCollectByCollectPostId(postId,collecterId);
 
-        //是否收藏？ collectList==null,未收藏，添加收藏记录  collectList！=null,已收藏，取消收藏（删除收藏记录）
+        //是否收藏？ collect==null,未收藏，添加收藏记录
 
-        if (collectList == null || collectList.size() == 0)
+        if (collect == null)
         {
             int addFlag = collectService.addCollectByCollecterId(postId, collecterId, collectTime);
             if (addFlag == 1) {
@@ -73,10 +85,7 @@ public class CollectController {
     }
 
     /**
-     * 查找收藏帖子
-     * 是否已收藏这个帖子？
-     * 1、collectList==null,未收藏，查找失败
-     * 2、collectList！=null,已收藏，展示查找内容
+     * 查找我的收藏帖子
      * @param request
      * @param response
      * @return
@@ -112,6 +121,121 @@ public class CollectController {
         out.close();
         return null;
 
+    }
+
+    /**
+     * 查找我的收藏帖子
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/findCollectByCollecterId2")
+    public String findCollectByCollecterId2(HttpServletRequest request,HttpServletResponse response)throws IOException{
+        PrintWriter out=null;
+        out = response.getWriter();
+
+        //收藏列表页面要显示的数据
+        List<CollectList> collectlistList = new ArrayList<CollectList>();
+
+        //前端传来的数据
+        String scollecterId =request.getParameter("collecterId");
+        int collecterId =Integer.parseInt(scollecterId);
+
+
+        List<Collect> collectList=collectService.findCollectByCollecterId(collecterId);
+        JSONArray jsonArray = new JSONArray();
+        if (collectList != null && collectList.size() > 0) {
+
+            //收藏列表页面要显示的数据
+            List<CollectList> collectListS = new ArrayList<CollectList>();
+            //依次查询帖子
+            for (Collect collect:collectList){
+                Post post= postService.findPostByid(collect.getPostId());
+                if (post!=null){
+                    CollectList collectlist = new CollectList();
+                    //给collectlist类赋值
+                    collectlist.setPostId(post.getId());
+                    collectlist.setPostPersonId(post.getPostPersonId());
+                    collectlist.setMovieName(post.getMovieName());
+                    collectlist.setSite(post.getSite());
+                    collectlist.setDetails(post.getDetails());
+                    collectlist.setCollectTime(collect.getCollectTime());
+                    User user=userService.findUserById(post.getPostPersonId());
+                    if (user!=null){
+                        collectlist.setName(user.getName());
+                        collectlist.setNickname(user.getNickname());
+                    }
+                    //赋值给collectlist类暂存
+                    collectListS.add(collectlist);
+                }
+            }
+            if (collectListS!=null&&collectListS.size()>0){
+                for (int i=collectListS.size()-1;i>=0;i--){
+                    collectlistList.add(collectListS.get(i));
+                    System.out.println("collectlistList====" + collectlistList);
+                    //json数组转换方法
+                    JSONObject jsonObj = (JSONObject) JSON.toJSON(collectListS.get(i));
+                    jsonArray.add(jsonObj);
+                }
+                //获取到的数据传过去APP端
+                out.print(jsonArray.toString());
+            }else {
+                out.print("null");
+            }
+
+
+
+        } else {
+            //获取到数据为空时，向APP传输没有找到数据的信号
+            out.print("nodata");
+        }
+
+        out.flush();
+        out.close();
+        return null;
+
+    }
+
+    /**
+     * 验证是否已经收藏帖子
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/findCollectByCollectPostId")
+    public String findCollectByCollectPostId(HttpServletRequest request,HttpServletResponse response)throws IOException{
+        PrintWriter out=null;
+        out = response.getWriter();
+
+        String spostId =request.getParameter("postId");
+        int postId =Integer.parseInt(spostId);
+        String scollecterId =request.getParameter("collecterId");
+        int collecterId =Integer.parseInt(scollecterId);
+
+        Collect collect = new Collect();
+        collect = collectService.findCollectByCollectPostId(postId,collecterId);
+
+        if (collect != null) {
+            //将User转换成json数据
+            JSONObject jsonObject = new JSONObject();
+            String collectJson = jsonObject.toJSONString(collect);
+
+            System.out.println("collect====" + collect);
+            System.out.println("collectJson====" + collectJson);
+
+            //获取到的数据传过去APP端
+            out.print(collectJson);
+        } else {
+            //获取到数据为空时，向APP传输没有找到数据的信号
+            out.print("nodata");
+        }
+
+
+        out.flush();
+        out.close();
+        return null;
     }
 
 

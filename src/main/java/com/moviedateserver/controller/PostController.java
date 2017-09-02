@@ -4,7 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.moviedateserver.entity.Post;
+import com.moviedateserver.entity.PostList;
+import com.moviedateserver.entity.User;
 import com.moviedateserver.service.PostService;
+import com.moviedateserver.service.UserService;
 import com.moviedateserver.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +26,8 @@ import java.util.List;
 public class PostController {
     @Autowired
     private PostService postService;
+    @Autowired
+    private UserService userService;
 
     /*
     * 查找所有的post
@@ -30,19 +36,47 @@ public class PostController {
     public String findAllPost(HttpServletRequest request, HttpServletResponse response)throws IOException {
         PrintWriter out =null;
         out = response.getWriter();
-        List<Post> postList = postService.findAllPost();
-        if (postList != null && postList.size() > 0) {
-            //将List转换成json数据
-            JSONArray jsonArray = new JSONArray();
-            for (Post post : postList) {
-                JSONObject jsonObj = (JSONObject) JSON.toJSON(post);
-                jsonArray.add(jsonObj);
-            }
+        List<PostList> postListList=new ArrayList<PostList>();
 
-            System.out.println("userList===="+postList);
-            System.out.println("jsonArry===="+jsonArray);
-            //获取到数据不为空时，向APP传输UserList的json数据
-            out.print(jsonArray.toString());
+        List<Post> postList = postService.findAllPost();
+        JSONArray jsonArray = new JSONArray();
+        if (postList != null && postList.size() > 0) {
+            List<PostList> postListS=new ArrayList<PostList>();
+            for (Post post : postList) {
+                User user=userService.findUserById(post.getPostPersonId());
+                if(user!=null){
+                    PostList postlist=new PostList();
+                    postlist.setId(post.getId());
+                    postlist.setDetails(post.getDetails());
+                    postlist.setEndTime(post.getEndTime());
+                    postlist.setMovieName(post.getMovieName());
+                    postlist.setMovieTime(post.getMovieTime());
+                    postlist.setMovieType(post.getMovieType());
+                    postlist.setSite(post.getSite());
+                    postlist.setSex(post.getSex());
+                    postlist.setPostTime(post.getPostTime());
+                    postlist.setPostPersonId(post.getPostPersonId());
+                    postlist.setName(user.getName());
+                    postlist.setNickname(user.getNickname());
+                    postlist.setGender(user.getGender());
+                    postListS.add(postlist);
+
+                }
+            }
+           if(postListS!=null&&postListS.size()>0){
+                for (int i= postListS.size()-1;i>=0;i--){
+                    postListList.add(postListS.get(i));
+                    System.out.println("collectlistList====" + postListList);
+                    //json数组转换方法
+                    JSONObject jsonObj = (JSONObject) JSON.toJSON(postListS.get(i));
+                    jsonArray.add(jsonObj);
+                }
+                out.print(jsonArray.toString());
+
+            }else {
+               out.print("null");
+           }
+
 
         }else {
             //获取到数据为空时，向APP传输没有找到数据的信号

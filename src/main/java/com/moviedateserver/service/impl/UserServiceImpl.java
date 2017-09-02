@@ -104,6 +104,10 @@ public class UserServiceImpl implements UserService{
         return userDao.findUserByPhone(phone);
     }
 
+    public User findUserById(int id) {
+        return userDao.findUserById(id);
+    }
+
     /**
      * 查找所有User，并按年龄降序排序好
      * @return

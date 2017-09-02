@@ -1,9 +1,12 @@
 package com.moviedateserver.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.moviedateserver.entity.Friend;
-import com.moviedateserver.entity.Person;
+import com.moviedateserver.entity.*;
 import com.moviedateserver.service.PersonService;
+import com.moviedateserver.service.PostService;
+import com.moviedateserver.service.UserService;
 import com.moviedateserver.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +26,10 @@ public class PersonController {
 
     @Autowired
     private PersonService personService;
+    @Autowired
+    private PostService postService;
+    @Autowired
+    private UserService userService;
 
     /**
      * 添加约影人信息
@@ -36,36 +44,55 @@ public class PersonController {
     @RequestMapping(value = "addPersonByPostId")
     public String addPersonByPostId(HttpServletRequest request, HttpServletResponse response)
             throws IOException{
-
-
         PrintWriter out =null;
-        out = response.getWriter();
-
         String spostId= request.getParameter("postId");
         int postId =Integer.parseInt(spostId);
+        System.out.println("postId="+postId);
         String sstartPersonId =request.getParameter("startPersonId");
-        int startPersonId =Integer.parseInt(sstartPersonId);;
+        int startPersonId =Integer.parseInt(sstartPersonId);
+        System.out.println("postId="+spostId+" startPersonId="+sstartPersonId);
         String sbyPersonId= request.getParameter("byPersonId");
         int byPersonId =Integer.parseInt(sbyPersonId);
+        System.out.println("postId="+spostId+" startPersonId="+sstartPersonId+"byPersonId="+sbyPersonId+ "addTime=");
         //如果需要的时间是当前系统的时间，时间不用从APP那边获取，都是后台这边统一处理，
         // 这样时间才不会因为网络延迟或者每个客户端的系统时间不同而出现时间计算标准不一样
         String personTime = TimeUtil.dateToString(new Date());
 
-        System.out.println("postId="+spostId+" startPersonId="+sstartPersonId+"byPersonId="+sbyPersonId+ "addTime="+personTime);
+
+
+        try {
+            out = response.getWriter();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         List<Person> personList=personService.findPersonByPostId(postId);
 
-        //是否收藏？ collectList==null,未收藏，添加收藏记录  collectList！=null,已收藏，取消收藏（删除收藏记录）
 
         if (personList == null || personList.size() == 0) {
 
             int addFlag = personService.addPersonByPostId(postId, startPersonId, byPersonId,personTime);
             if (addFlag == 1) {
                 System.out.println("添加成功");
-
                 out.print("add_success");
             }
-        } else {
+        } else if (personList.size()>=1){
+            Post post=postService.findPostByid(postId);
+            if (post.getMovieType()==1){
+                List<Person> personList1=personService.findPersobByPostpersonId(postId,byPersonId);
+                if (personList1==null){
+                    int addFlag = personService.addPersonByPostId(postId, startPersonId, byPersonId,personTime);
+                    if (addFlag == 1) {
+                        System.out.println("添加成功");
+                        out.print("add_success");
+                    }
+                }else {
+                    out.print("hasjoined");
+                }
+
+            }else {
+                 out.print("ending");
+            }
 
         }
 
@@ -90,21 +117,38 @@ public class PersonController {
         PrintWriter out=null;
         out = response.getWriter();
 
+        List<PersonList> personListList=new ArrayList<PersonList>();
         String spostId= request.getParameter("postId");
         int postId =Integer.parseInt(spostId);
 
+        JSONArray jsonArray = new JSONArray();
 
         List<Person> personList=personService.findPersonByPostId(postId);
         out =response.getWriter();
         if (personList != null && personList.size() > 0) {
-            JSONObject jsonObject = new JSONObject();
-            String userJson = jsonObject.toJSONString(personList);
 
-            System.out.println("person====" + personList);
-            System.out.println("userJson====" + userJson);
+            List<PersonList> personListS=new ArrayList<PersonList>();
+            for (Person person:personList){
+                User user=userService.findUserById(person.getByPersonId());
+                if (user!=null){
+                    PersonList personList1=new PersonList();
+                    personList1.setByPersonId(person.getByPersonId());
+                    personList1.setName(user.getName());
+                    personListS.add(personList1);
+                }
+            }
+            if (personListS!=null&&personListS.size()>0){
+                for (int i=personListS.size()-1;i>=0;i--){
+                    personListList.add(personListS.get(i));
+                    System.out.println("friendListList====" + personListList);
+                    JSONObject jsonObject=(JSONObject) JSON.toJSON(personListS.get(i));
+                    jsonArray.add(jsonObject);
+                }
+
+            }
 
             //获取到的数据传过去APP端
-            out.print(userJson);
+            out.print(jsonArray.toString());
         } else {
             //获取到数据为空时，向APP传输没有找到数据的信号
             out.print("nodata");
@@ -115,4 +159,5 @@ public class PersonController {
         return null;
 
     }
+
 }

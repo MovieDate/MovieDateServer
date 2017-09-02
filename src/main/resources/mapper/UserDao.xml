@@ -55,6 +55,12 @@
         WHERE phone=#{phone}
     </select>
 
+    <select id="findUserById" resultType="User" parameterType="int">
+        SELECT *
+        FROM user_tab
+        WHERE id=#{id}
+    </select>
+
     <!--检测密码是否正确-->
     <select id="checkPassword" resultType="User">
         SELECT *

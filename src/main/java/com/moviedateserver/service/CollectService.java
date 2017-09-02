@@ -13,4 +13,7 @@ public interface CollectService {
      *通过postId 查询信息
      */
     List<Collect> findCollectByCollecterId(int collecterId);
+
+    /* 通过collecterId 和postid查询信息-验证是否已经收藏 */
+    Collect findCollectByCollectPostId(int postId,int collecterId);
 }

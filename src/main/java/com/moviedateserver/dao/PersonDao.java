@@ -15,4 +15,6 @@ public interface PersonDao {
      *通过postId 查询信息
      */
     List<Person> findPersonByPostId(int postId);
+
+    List<Person> findPersobByPostpersonId(@Param("postId")int postId,@Param("byPersonId")int byPersonId);
 }

@@ -19,7 +19,7 @@ public class CollectDaoTest {
 
     @Test
     public void addCollectByCollecterId() throws Exception{
-        int addAmount = collectDao.addCollectByCollecterId(2, 3,  "20150503");
+        int addAmount = collectDao.addCollectByCollecterId(10, 1,  "20150503");
         System.out.println("操作后返回插入的数目：" + addAmount);
     }
 
@@ -27,5 +27,12 @@ public class CollectDaoTest {
     public void findCollectByCollecterId() throws Exception {
         List<Collect> collectList = collectDao.findCollectByCollecterId(3);
             System.out.println("user===" + collectList);
+    }
+
+    @Test
+    public void findCollectByCollectPostId() throws Exception{
+        Collect collect=collectDao.findCollectByCollectPostId(7,1);
+        System.out.println("user===" + collect);
+
     }
 }

@@ -69,7 +69,9 @@ public class UserServiceTest {
     @Test
     public void findAllUserDESC() throws Exception {
         List<User> userList=userService.findAllUserDESC();
-        System.out.println("userList===="+userList);
+        for (User user : userList) {
+            System.out.println("User===="+user);
+        }
     }
 
     @Test

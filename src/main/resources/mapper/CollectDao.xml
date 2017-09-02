@@ -18,11 +18,18 @@
         VALUES (#{postId},#{collecterId},#{collectTime});
     </insert>
 
-    <!--通过collecterId 查询信息 -->
+    <!--通过collecterId 查询信息-我的收藏功能 -->
     <select id="findCollectByCollecterId" resultType="Collect" parameterType="int">
         SELECT *
         FROM collect_tab
         WHERE collecterId=#{collecterId};
+    </select>
+
+    <!--通过collecterId 和postid查询信息-验证是否已经收藏 -->
+    <select id="findCollectByCollectPostId" resultType="Collect">
+        SELECT *
+        FROM collect_tab
+        WHERE postId=#{postId} AND collecterId=#{collecterId} ;
     </select>
 
 </mapper>

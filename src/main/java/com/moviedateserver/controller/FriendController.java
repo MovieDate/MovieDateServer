@@ -1,8 +1,13 @@
 package com.moviedateserver.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.moviedateserver.entity.Friend;
+import com.moviedateserver.entity.FriendList;
+import com.moviedateserver.entity.User;
 import com.moviedateserver.service.FriendService;
+import com.moviedateserver.service.UserService;
 import com.moviedateserver.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +26,8 @@ import java.util.List;
 public class FriendController {
     @Autowired
     private FriendService friendService;
+    @Autowired
+    private UserService userService;
 
     /**
      * 添加好友（点击添加按钮)
@@ -130,22 +138,40 @@ public class FriendController {
 
         PrintWriter out=null;
         out = response.getWriter();
+        List<FriendList> friendListList =new ArrayList<FriendList>();
 
         String smyId=request.getParameter("myId");
         int myId =Integer.parseInt(smyId);
 
-
         List<Friend> friendList=friendService.findFriendByMyId(myId);
-        out =response.getWriter();
+        JSONArray jsonArray = new JSONArray();
+
         if (friendList != null && friendList.size() > 0) {
-            JSONObject jsonObject = new JSONObject();
-            String userJson = jsonObject.toJSONString(friendList);
 
-            System.out.println("friend====" + friendList);
-            System.out.println("userJson====" + userJson);
+            List<FriendList> friendListS=new ArrayList<FriendList>();
+            for (Friend friend:friendList){
+                User user=userService.findUserById(friend.getFriendId());
+                if (user!=null){
+                    FriendList friendList1=new FriendList();
+                    friendList1.setName(user.getName());
+                    friendList1.setFriendId(friend.getFriendId());
 
-            //获取到的数据传过去APP端
-            out.print(userJson);
+                    friendListS.add(friendList1);
+                }
+            }
+            if (friendListS!=null&&friendListS.size()>0){
+                for (int i=friendListS.size()-1;i>=0;i--){
+                    friendListList.add(friendListS.get(i));
+                    System.out.println("friendListList====" + friendListList);
+                    JSONObject jsonObject=(JSONObject) JSON.toJSON(friendListS.get(i));
+                    jsonArray.add(jsonObject);
+                }
+                //获取到的数据传过去APP端
+                out.print(jsonArray.toString());
+            }else {
+                out.print("null");
+            }
+
         } else {
             //获取到数据为空时，向APP传输没有找到数据的信号
             out.print("nodata");

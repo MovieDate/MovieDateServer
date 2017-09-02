@@ -1,6 +1,7 @@
 package com.moviedateserver.service;
 
 import com.moviedateserver.entity.Person;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -12,4 +13,7 @@ public interface PersonService {
      *通过postId 查询信息
      */
     List<Person> findPersonByPostId(int postId);
+
+    /*通过postId和byPersonId验证是否已经报名约影*/
+    List<Person> findPersobByPostpersonId(int postId, int byPersonId);
 }

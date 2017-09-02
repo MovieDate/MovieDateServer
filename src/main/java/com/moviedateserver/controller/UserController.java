@@ -156,6 +156,45 @@ public class UserController {
         return null;
     }
 
+    @RequestMapping(value = "/findUserById")
+    public String findUserById(HttpServletRequest request, HttpServletResponse response)
+            throws IOException{
+
+//        response.setContentType("text/html;charset=utf-8");
+//        request.setCharacterEncoding("UTF-8");
+
+        //request.getParameter("phone")就是APP端传过来的请求参数
+        String sid = request.getParameter("id");
+        int id=Integer.parseInt(sid);
+
+        User user = new User();
+        user = userService.findUserById(id);
+        PrintWriter out = null;
+        try {
+            out = response.getWriter();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (user != null) {
+            //将User转换成json数据
+            JSONObject jsonObject = new JSONObject();
+            String userJson = jsonObject.toJSONString(user);
+
+            System.out.println("user====" + user);
+            System.out.println("userJson====" + userJson);
+
+            //获取到的数据传过去APP端
+            out.print(userJson);
+        } else {
+            //获取到数据为空时，向APP传输没有找到数据的信号
+            out.print("nodata");
+        }
+
+        out.flush();
+        out.close();
+        return null;
+    }
+
     /*
     * 注册，添加用户
     *  @param request

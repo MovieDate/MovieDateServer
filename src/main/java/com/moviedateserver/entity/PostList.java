@@ -1,6 +1,6 @@
 package com.moviedateserver.entity;
 
-public class Post {
+public class PostList {
     private int id;      //自动编号,自增长
     private int postPersonId;    //发帖人的id
     private String postTime;       //发帖时间
@@ -11,7 +11,9 @@ public class Post {
     private String endTime;      //完成约影时间（不显示，在约影完成按键直接获取存储）
     private int movieType;     //约影类型（0为2人单独约影。1为多人或团体约影，PP端获取约影类型时，获取约影人表，设置好报名人数，如果超过报名人数，约影人可挑选）
     private String details;       //发帖内容
-
+    private String name;
+    private String nickname;
+    private int gender;
 
 
 
@@ -95,6 +97,29 @@ public class Post {
         this.details = details;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
 
     @Override
     public String toString() {
@@ -109,6 +134,9 @@ public class Post {
                 ", endTime='" + endTime + '\'' +
                 ", movieType=" + movieType +
                 ", details='" + details + '\'' +
+                ", name='" + name + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", gender=" + gender +
                 '}';
     }
 }

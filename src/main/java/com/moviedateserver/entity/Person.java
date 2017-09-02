@@ -5,7 +5,7 @@ public class Person {
     private int postId;   //帖子id
     private int startPersonId;   //发起约影人id
     private int byPersonId;    //被约人id
-    private String personTime;  //时间（建立该条记录时的时间，后台处理就行）
+    private String personTime;  //时间（建立该条记录时的时间，后台处理就行）x
 
     public int getId() {
         return id;

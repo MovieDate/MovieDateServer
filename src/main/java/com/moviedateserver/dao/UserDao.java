@@ -64,6 +64,7 @@ public interface UserDao {//添加UserDao的test时，选中类名UserDao，右�
      * @return 查找成功返回User，没有则null
      */
     User findUserByPhone(String phone);
+    User findUserById(int id);
 
     /**
      * 查找所有User，并按年龄降序排序好

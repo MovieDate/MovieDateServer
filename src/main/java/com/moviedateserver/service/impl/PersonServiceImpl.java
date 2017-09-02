@@ -26,4 +26,12 @@ public class PersonServiceImpl implements PersonService {
     public List<Person> findPersonByPostId(int postId) {
         return personDao.findPersonByPostId(postId);
     }
+
+    /*通过postId和byPersonId验证是否已经报名约影*/
+    public List<Person> findPersobByPostpersonId(int postId, int byPersonId) {
+        return personDao.findPersobByPostpersonId(postId,byPersonId);
+    }
+
+
+
 }
