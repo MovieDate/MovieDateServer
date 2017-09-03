@@ -29,65 +29,6 @@ public class PostController {
     @Autowired
     private UserService userService;
 
-    /*
-    * 查找所有的post
-    * */
-    @RequestMapping(value = "/findAllPost")
-    public String findAllPost(HttpServletRequest request, HttpServletResponse response)throws IOException {
-        PrintWriter out =null;
-        out = response.getWriter();
-        List<PostList> postListList=new ArrayList<PostList>();
-
-        List<Post> postList = postService.findAllPost();
-        JSONArray jsonArray = new JSONArray();
-        if (postList != null && postList.size() > 0) {
-            List<PostList> postListS=new ArrayList<PostList>();
-            for (Post post : postList) {
-                User user=userService.findUserById(post.getPostPersonId());
-                if(user!=null){
-                    PostList postlist=new PostList();
-                    postlist.setId(post.getId());
-                    postlist.setDetails(post.getDetails());
-                    postlist.setEndTime(post.getEndTime());
-                    postlist.setMovieName(post.getMovieName());
-                    postlist.setMovieTime(post.getMovieTime());
-                    postlist.setMovieType(post.getMovieType());
-                    postlist.setSite(post.getSite());
-                    postlist.setSex(post.getSex());
-                    postlist.setPostTime(post.getPostTime());
-                    postlist.setPostPersonId(post.getPostPersonId());
-                    postlist.setName(user.getName());
-                    postlist.setNickname(user.getNickname());
-                    postlist.setGender(user.getGender());
-                    postListS.add(postlist);
-
-                }
-            }
-           if(postListS!=null&&postListS.size()>0){
-                for (int i= postListS.size()-1;i>=0;i--){
-                    postListList.add(postListS.get(i));
-                    System.out.println("collectlistList====" + postListList);
-                    //json数组转换方法
-                    JSONObject jsonObj = (JSONObject) JSON.toJSON(postListS.get(i));
-                    jsonArray.add(jsonObj);
-                }
-                out.print(jsonArray.toString());
-
-            }else {
-               out.print("null");
-           }
-
-
-        }else {
-            //获取到数据为空时，向APP传输没有找到数据的信号
-            out.print("nodata");
-        }
-
-        out.flush();
-        out.close();
-        return null;//这里返回空就行
-    }
-
     /**
      * 添加帖子/更新
      * 是否添加？
@@ -343,25 +284,112 @@ public class PostController {
 
     }
 
-    @RequestMapping(value = "/findposttab")
-    public String findposttab(HttpServletRequest request,HttpServletResponse response)throws IOException{
-
-        PrintWriter out=null;
+    /*
+    * 查找所有的post
+    * */
+    @RequestMapping(value = "/findAllPost")
+    public String findAllPost(HttpServletRequest request, HttpServletResponse response)throws IOException {
+        PrintWriter out =null;
         out = response.getWriter();
+        List<PostList> postListList=new ArrayList<PostList>();
 
-        String details=request.getParameter("details");
-
-        List<Post> postList=postService.findposttab(details);
-        out =response.getWriter();
+        List<Post> postList = postService.findAllPost();
+        JSONArray jsonArray = new JSONArray();
         if (postList != null && postList.size() > 0) {
-            JSONObject jsonObject = new JSONObject();
-            String userJson = jsonObject.toJSONString(postList);
+            List<PostList> postListS=new ArrayList<PostList>();
+            for (Post post : postList) {
+                User user=userService.findUserById(post.getPostPersonId());
+                if(user!=null){
+                    PostList postlist=new PostList();
+                    postlist.setId(post.getId());
+                    postlist.setDetails(post.getDetails());
+                    postlist.setEndTime(post.getEndTime());
+                    postlist.setMovieName(post.getMovieName());
+                    postlist.setMovieTime(post.getMovieTime());
+                    postlist.setMovieType(post.getMovieType());
+                    postlist.setSite(post.getSite());
+                    postlist.setSex(post.getSex());
+                    postlist.setPostTime(post.getPostTime());
+                    postlist.setPostPersonId(post.getPostPersonId());
+                    postlist.setName(user.getName());
+                    postlist.setNickname(user.getNickname());
+                    postlist.setGender(user.getGender());
+                    postListS.add(postlist);
 
-            System.out.println("review====" + postList);
-            System.out.println("userJson====" + userJson);
+                }
+            }
+            if(postListS!=null&&postListS.size()>0){
+                for (int i= postListS.size()-1;i>=0;i--){
+                    postListList.add(postListS.get(i));
+                    System.out.println("collectlistList====" + postListList);
+                    //json数组转换方法
+                    JSONObject jsonObj = (JSONObject) JSON.toJSON(postListS.get(i));
+                    jsonArray.add(jsonObj);
+                }
+                out.print(jsonArray.toString());
 
-            //获取到的数据传过去APP端
-            out.print(userJson);
+            }else {
+                out.print("null");
+            }
+
+
+        }else {
+            //获取到数据为空时，向APP传输没有找到数据的信号
+            out.print("nodata");
+        }
+
+        out.flush();
+        out.close();
+        return null;//这里返回空就行
+    }
+
+    /*模糊搜索*/
+    @RequestMapping(value = "/findposttab")
+    public String findposttab(HttpServletRequest request,HttpServletResponse response)throws IOException {
+
+        PrintWriter out = null;
+        out = response.getWriter();
+        List<PostList> postListList = new ArrayList<PostList>();
+
+        String details = request.getParameter("details");
+
+        List<Post> postList = postService.findposttab(details);
+        JSONArray jsonArray = new JSONArray();
+        if (postList != null && postList.size() > 0) {
+            List<PostList> postListS = new ArrayList<PostList>();
+            for (Post post : postList) {
+                User user = userService.findUserById(post.getPostPersonId());
+                if (user != null) {
+                    PostList postlist = new PostList();
+                    postlist.setId(post.getId());
+                    postlist.setDetails(post.getDetails());
+                    postlist.setEndTime(post.getEndTime());
+                    postlist.setMovieName(post.getMovieName());
+                    postlist.setMovieTime(post.getMovieTime());
+                    postlist.setMovieType(post.getMovieType());
+                    postlist.setSite(post.getSite());
+                    postlist.setSex(post.getSex());
+                    postlist.setPostTime(post.getPostTime());
+                    postlist.setPostPersonId(post.getPostPersonId());
+                    postlist.setName(user.getName());
+                    postlist.setNickname(user.getNickname());
+                    postlist.setGender(user.getGender());
+                    postListS.add(postlist);
+                }
+            }
+            if (postListS != null && postListS.size() > 0) {
+                for (int i = postListS.size() - 1; i >= 0; i--) {
+                    postListList.add(postListS.get(i));
+                    System.out.println("collectlistList====" + postListList);
+                    //json数组转换方法
+                    JSONObject jsonObj = (JSONObject) JSON.toJSON(postListS.get(i));
+                    jsonArray.add(jsonObj);
+                }
+                out.print(jsonArray.toString());
+            } else {
+                out.print("null");
+            }
+
         } else {
             //获取到数据为空时，向APP传输没有找到数据的信号
             out.print("nodata");
@@ -369,8 +397,7 @@ public class PostController {
 
         out.flush();
         out.close();
-        return null;
-
+        return null;//这里返回空就行
     }
 
 }

@@ -56,7 +56,7 @@ public class PostDaoTest {
 
     @Test
     public void findposttab() throws Exception {
-        List<Post> postList = postDao.findposttab("廉江");
+        List<Post> postList = postDao.findposttab("%廉江%");
         System.out.println("postList==="+postList);
     }
 

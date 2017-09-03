@@ -56,7 +56,7 @@ public class PostServiceTest {
 
     @Test
     public void findposttab() throws Exception {
-        List<Post> postList = postService.findposttab("'%廉江%'");
-        System.out.println("user==="+postList);
+        List<Post> postList = postService.findposttab("廉江");
+        System.out.println("postList==="+postList);
     }
 }

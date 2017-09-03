@@ -66,7 +66,7 @@
         WHERE details=#{details};
     </select>
 
-    <select id="findposttab" resultType="Post" >
+    <select id="findposttab" resultType="Post" parameterType="String">
         SELECT *
         FROM post_tab
         WHERE CONCAT (site,movieName,details) LIKE #{details};

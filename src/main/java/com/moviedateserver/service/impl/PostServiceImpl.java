@@ -44,6 +44,6 @@ public class PostServiceImpl implements PostService {
     }
 
     public List<Post> findposttab(String details) {
-        return postDao.findposttab(details);
+        return postDao.findposttab("%"+details+"%");
     }
 }
