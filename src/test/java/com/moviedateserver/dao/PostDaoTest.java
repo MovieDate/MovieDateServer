@@ -50,14 +50,14 @@ public class PostDaoTest {
 
     @Test
     public void findPostBysite() throws Exception {
-        List<Post> postList = postDao.findPostBysite("江门");
-        System.out.println("user==="+postList);
+        List<Post> postList = postDao.findPostBysite("廉江");
+        System.out.println("postList==="+postList);
     }
 
     @Test
-    public void findPostBydetails() throws Exception {
-        List<Post> postList = postDao.findPostBydetails("大地");
-        System.out.println("user==="+postList);
+    public void findposttab() throws Exception {
+        List<Post> postList = postDao.findposttab("廉江");
+        System.out.println("postList==="+postList);
     }
 
 }

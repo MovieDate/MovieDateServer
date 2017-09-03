@@ -39,4 +39,11 @@
         WHERE reviewDetails=#{reviewDetails};
     </select>
 
+    <!--通过帖子id搜索该帖子的所有评论-->
+    <select id="findReviewByPostId" resultType="Review" parameterType="int">
+        SELECT *
+        FROM review_tab
+        WHERE postId=#{postId};
+    </select>
+
 </mapper>

@@ -20,4 +20,7 @@ public interface ReviewDao {
    /*通过reviewDetails 查询信息 */
    List<Review> findReviewByReviewDetails(String reviewDetails);
 
+   /*通过帖子id搜索该帖子的所有评论*/
+   List<Review> findReviewByPostId(int postId);
+
 }

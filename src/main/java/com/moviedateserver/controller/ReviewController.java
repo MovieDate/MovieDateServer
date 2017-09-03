@@ -1,8 +1,13 @@
 package com.moviedateserver.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.moviedateserver.entity.Review;
+import com.moviedateserver.entity.ReviewList;
+import com.moviedateserver.entity.User;
 import com.moviedateserver.service.ReviewService;
+import com.moviedateserver.service.UserService;
 import com.moviedateserver.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.View;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +27,8 @@ import java.util.List;
 public class ReviewController {
     @Autowired
     private ReviewService reviewService;
+    @Autowired
+    private UserService userService;
 
     /**
      * 添加評論（点击添加按钮)
@@ -49,9 +57,9 @@ public class ReviewController {
 
         System.out.println("postId="+spostId+" postPersonId="+spostPersonId+"reviewDetails"+reviewDetails+" reviewTime="+reviewTime);
 
-        List<Review> reviewList=reviewService.findReviewByReviewDetails(reviewDetails);
+        /*List<Review> reviewList=reviewService.findReviewByReviewDetails(reviewDetails);
 
-        if (reviewList == null || reviewList.size() == 0) {
+        if (reviewList == null || reviewList.size() == 0) {*/
 
             int addFlag = reviewService.addUserReviewByPostId(postId,postPersonId,reviewDetails,reviewTime);
             if (addFlag == 1) {
@@ -59,9 +67,10 @@ public class ReviewController {
 
                 out.print("add_success");
             }
-        } else {
+        /*}*/ else {
             //更新
-            updateReviewByPostId(request,response);
+            /*updateReviewByPostId(request,response);*/
+            out.print("add_failed");
 
         }
 
@@ -173,8 +182,8 @@ public class ReviewController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/findFriendByMyId")
-    public String findFriendByMyId(HttpServletRequest request,HttpServletResponse response)throws IOException{
+    @RequestMapping(value = "/findReviewByReviewDetails")
+    public String findReviewByReviewDetails(HttpServletRequest request,HttpServletResponse response)throws IOException{
 
         PrintWriter out=null;
         out = response.getWriter();
@@ -182,21 +191,65 @@ public class ReviewController {
         String reviewDetails=request.getParameter("reviewDetails");
 
         List<Review> reviewList=reviewService.findReviewByReviewDetails(reviewDetails);
-        out =response.getWriter();
         if (reviewList != null && reviewList.size() > 0) {
             JSONObject jsonObject = new JSONObject();
-            String userJson = jsonObject.toJSONString(reviewList);
+            String reviewJson = jsonObject.toJSONString(reviewList);
 
             System.out.println("review====" + reviewList);
-            System.out.println("userJson====" + userJson);
+            System.out.println("reviewJson====" + reviewJson);
 
             //获取到的数据传过去APP端
-            out.print(userJson);
+            out.print(reviewJson);
         } else {
             //获取到数据为空时，向APP传输没有找到数据的信号
             out.print("nodata");
         }
 
+        out.flush();
+        out.close();
+        return null;
+
+    }
+
+    @RequestMapping(value = "/findReviewByPostId")
+    public String findReviewByPostId(HttpServletResponse response,HttpServletRequest request)throws IOException{
+        PrintWriter out=null;
+        out = response.getWriter();
+
+        List<ReviewList> reviewListList=new ArrayList<ReviewList>();
+        String spostId= request.getParameter("postId");
+        int postId =Integer.parseInt(spostId);
+
+        JSONArray jsonArray = new JSONArray();
+        List<Review> reviewList=reviewService.findReviewByPostId(postId);
+        if(reviewList!=null&&reviewList.size()>0){
+            List<ReviewList> reviewListS=new ArrayList<ReviewList>();
+            for (Review review:reviewList){
+                User user=userService.findUserById(review.getPostPersonId());
+                if (user!=null){
+                    ReviewList reviewList1=new ReviewList();
+                    reviewList1.setName(user.getName());
+                    reviewList1.setPostPersonId(review.getPostPersonId());
+                    reviewList1.setReviewDetails(review.getReviewDetails());
+                    reviewList1.setReviewTime(review.getReviewTime());
+
+                    reviewListS.add(reviewList1);
+                }
+            }
+            if (reviewListS!=null&&reviewListS.size()>0){
+                for (int i=reviewListS.size()-1;i>=0;i--){
+                    reviewListList.add(reviewListS.get(i));
+                    System.out.println("reviewListList====" + reviewListList);
+                    JSONObject jsonObject=(JSONObject) JSON.toJSON(reviewListS.get(i));
+                    jsonArray.add(jsonObject);
+                }
+            }
+            //获取到的数据传过去APP端
+            out.print(jsonArray.toString());
+        } else {
+            //获取到数据为空时，向APP传输没有找到数据的信号
+            out.print("nodata");
+        }
         out.flush();
         out.close();
         return null;

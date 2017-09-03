@@ -15,7 +15,6 @@
     <select id="findAllPost" resultType="Post">
         SELECT *
         FROM post_tab
-        ORDER BY postTime DESC
     </select>
 
     <!--通过 addPostByPostpersonid 来添加 -->
@@ -65,6 +64,12 @@
         SELECT *
         FROM post_tab
         WHERE details=#{details};
+    </select>
+
+    <select id="findposttab" resultType="Post" >
+        SELECT *
+        FROM post_tab
+        WHERE CONCAT (site,movieName,details) LIKE #{details};
     </select>
 
 

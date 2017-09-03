@@ -37,5 +37,6 @@ public interface PostService {
 
     List<Post> findPostBysite(String site);
 
-    List<Post> findPostBydetails(String details);
+    List<Post> findposttab(String details);
+
 }

@@ -43,7 +43,7 @@ public class PostServiceImpl implements PostService {
         return postDao.findPostBysite(site);
     }
 
-    public List<Post> findPostBydetails(String details) {
-        return postDao.findPostBydetails(details);
+    public List<Post> findposttab(String details) {
+        return postDao.findposttab(details);
     }
 }

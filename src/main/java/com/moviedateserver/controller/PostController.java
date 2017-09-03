@@ -343,15 +343,15 @@ public class PostController {
 
     }
 
-    @RequestMapping(value = "/findPostBydetails")
-    public String findPostBydetails(HttpServletRequest request,HttpServletResponse response)throws IOException{
+    @RequestMapping(value = "/findposttab")
+    public String findposttab(HttpServletRequest request,HttpServletResponse response)throws IOException{
 
         PrintWriter out=null;
         out = response.getWriter();
 
         String details=request.getParameter("details");
 
-        List<Post> postList=postService.findPostBydetails(details);
+        List<Post> postList=postService.findposttab(details);
         out =response.getWriter();
         if (postList != null && postList.size() > 0) {
             JSONObject jsonObject = new JSONObject();

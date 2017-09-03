@@ -28,4 +28,8 @@ public class ReviewServiceImpl implements ReviewService {
     public List<Review> findReviewByReviewDetails(String reviewDetails) {
         return reviewDao.findReviewByReviewDetails(reviewDetails);
     }
+
+    public List<Review> findReviewByPostId(int postId) {
+        return reviewDao.findReviewByPostId(postId);
+    }
 }

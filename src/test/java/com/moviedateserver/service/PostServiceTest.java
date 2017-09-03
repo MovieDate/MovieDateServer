@@ -45,18 +45,18 @@ public class PostServiceTest {
     @Test
     public void findPostBymovieName() throws Exception {
         List<Post> postList = postService.findPostBymovieName("战狼");
-        System.out.println("user===" + postList);
+        System.out.println("postList===" + postList);
     }
 
     @Test
     public void findPostBysite() throws Exception {
         List<Post> postList = postService.findPostBysite("江门");
-        System.out.println("user==="+postList);
+        System.out.println("postList==="+postList);
     }
 
     @Test
-    public void findPostBydetails() throws Exception {
-        List<Post> postList = postService.findPostBydetails("大地");
+    public void findposttab() throws Exception {
+        List<Post> postList = postService.findposttab("'%廉江%'");
         System.out.println("user==="+postList);
     }
 }
