@@ -14,4 +14,8 @@ public interface FriendDao {
 
     /*通过 myId 查询信息*/
     List<Friend>  findFriendByMyId(int myId);
+
+    /*
+    * 通过myId 和friendId查询信息*/
+    Friend findFriendByMyIdFriendId(@Param("myId")int myId, @Param("friendId")int friendId);
 }

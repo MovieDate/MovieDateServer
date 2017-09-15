@@ -31,4 +31,11 @@
         WHERE myId=#{myId};
     </select>
 
+    <!--通过myId 和friendId查询信息-->
+    <select id="findFriendByMyIdFriendId" resultType="Friend" parameterType="int">
+        SELECT *
+        FROM friend_tab
+        WHERE myId=#{myId} AND friendId=#{friendId};
+    </select>
+
 </mapper>

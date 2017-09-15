@@ -24,4 +24,8 @@ public class FriendServiceImpl implements FriendService{
     public List<Friend> findFriendByMyId(int myId) {
         return friendDao.findFriendByMyId(myId);
     }
+
+    public Friend findFriendByMyIdFriendId(int myId, int friendId) {
+        return friendDao.findFriendByMyIdFriendId(myId,friendId);
+    }
 }

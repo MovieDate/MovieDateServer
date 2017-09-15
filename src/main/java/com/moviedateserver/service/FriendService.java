@@ -13,4 +13,8 @@ public interface FriendService {
      *通过 myId 查询信息
      */
     List<Friend> findFriendByMyId(int myId);
+
+    /*
+    * 通过myId 和friendId查询信息*/
+    Friend findFriendByMyIdFriendId(int myId,int friendId);
 }

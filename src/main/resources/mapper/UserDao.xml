@@ -77,10 +77,17 @@
 
     <!--填写资料时传入全部数据-->
     <update id="updateUser">
-         update  user_tab
+         UPDATE  user_tab
          SET name=#{name},nickname=#{nickname},gender=#{gender},age=#{age},habit=#{habit},birthday=#{birthday},job=#{job},address=#{address},weight=#{weight},height=#{height},xingZuo=#{xingZuo},signature=#{signature}
          WHERE phone=#{phone}
     </update>
+
+    <!--搜索好友-->
+    <select id="findUser" resultType="User" parameterType="String">
+         SELECT *
+        FROM user_tab
+        WHERE CONCAT (name,phone,nickname) LIKE #{details};
+    </select>
 
 
 </mapper>

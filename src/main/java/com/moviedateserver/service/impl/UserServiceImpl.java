@@ -122,4 +122,9 @@ public class UserServiceImpl implements UserService{
     public int updataUser(String phone,String name,String nickname, int gender, int age, String habit, String birthday, String job, String address, String weight, String height, String xingZuo, String signature) {
         return userDao.updateUser(phone,name,nickname,gender, age,habit,birthday,job,address,weight,height,xingZuo,signature);
     }
+
+    /*搜索好友*/
+    public List<User> findUser(String details) {
+        return userDao.findUser("%"+details+"%");
+    }
 }

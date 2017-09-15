@@ -39,7 +39,7 @@ public class FriendController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/addDFriendByMyId")
+    @RequestMapping(value = "/addFriendByMyId")
     public String addFriendByMyId(HttpServletRequest request, HttpServletResponse response)
         throws IOException{
         PrintWriter out =null;
@@ -55,11 +55,11 @@ public class FriendController {
 
         System.out.println("myId="+smyId+" friendId="+sfriendId+" addTime="+addTime);
 
-        List<Friend> friendList=friendService.findFriendByMyId(myId);
+        Friend friend=friendService.findFriendByMyIdFriendId(myId,friendId);
 
-        //是否收藏？ collectList==null,未收藏，添加收藏记录  collectList！=null,已收藏，取消收藏（删除收藏记录）
+        //是否收藏？ friend==null,未添加 friend！=null,已添加
 
-        if (friendList == null || friendList.size() == 0) {
+        if (friend == null ) {
 
             int addFlag = friendService.addFriendByMyId(myId, friendId, addTime);
             if (addFlag == 1) {
@@ -155,6 +155,7 @@ public class FriendController {
                     FriendList friendList1=new FriendList();
                     friendList1.setName(user.getName());
                     friendList1.setFriendId(friend.getFriendId());
+                    friendList1.setFriendphone(user.getPhone());
 
                     friendListS.add(friendList1);
                 }
@@ -181,6 +182,49 @@ public class FriendController {
         out.close();
         return null;
 
+    }
+
+    /*
+    * 验证好友是否已添加
+    1、friendList==null,未添加
+     * 2、friendList！=null,已添加
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+    * */
+    @RequestMapping(value = "/findFriendByMyIdFriendId")
+    public String findFriendByMyIdFriendId(HttpServletRequest request,HttpServletResponse response)throws IOException{
+        PrintWriter out=null;
+        out = response.getWriter();
+
+        String smyId= request.getParameter("myId");
+        int myId =Integer.parseInt(smyId);
+        String sfriendId =request.getParameter("friendId");
+        int friendId =Integer.parseInt(sfriendId);;
+
+        System.out.println("myId="+smyId+" friendId="+sfriendId+" addTime=");
+
+        Friend friend=new Friend();
+        friend=friendService.findFriendByMyIdFriendId(myId,friendId);
+        if (friend!=null){
+            //将User转换成json数据
+            JSONObject jsonObject = new JSONObject();
+            String friendJson = jsonObject.toJSONString(friend);
+
+            System.out.println("friend====" + friend);
+            System.out.println("friendJson====" + friendJson);
+
+            //获取到的数据传过去APP端
+            out.print(friendJson);
+        } else {
+            //获取到数据为空时，向APP传输没有找到数据的信号
+            out.print("nodata");
+        }
+
+        out.flush();
+        out.close();
+        return null;
     }
 
 

@@ -212,11 +212,25 @@ public class UserController {
         int gender =Integer.parseInt(sgender);
         int addFlag=userService.addUserByPhonePsw(phone,password,name,gender);
         if (addFlag==1){
-            out.print("add_success");
+            User user = new User();
+            user = userService.findUserByPhone(phone);
+            if (user != null) {
+                //将User转换成json数据
+                JSONObject jsonObject = new JSONObject();
+                String userJson = jsonObject.toJSONString(user);
+
+                System.out.println("user====" + user);
+                System.out.println("userJson====" + userJson);
+
+                //获取到的数据传过去APP端
+                out.print(userJson);
+            } else {
+                //获取到数据为空时，向APP传输没有找到数据的信号
+                out.print("nodata");
+            }
         }else {
             out.print("add_failed");
         }
-
         out.flush();
         out.close();
         return  null;

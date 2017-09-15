@@ -84,4 +84,7 @@ public interface UserService {
      * 通过phone完善用户表
      */
     int updataUser(String phone,String name,String nickname, int gender, int age, String habit, String birthday, String job, String address, String weight, String height, String xingZuo, String signature);
+
+    /*搜索好友*/
+    List<User> findUser(String details);
 }

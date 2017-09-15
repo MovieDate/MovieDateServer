@@ -80,4 +80,7 @@ public interface UserDao {//添加UserDao的test时，选中类名UserDao，右�
                    @Param("address")String address, @Param("weight")String weight, @Param("height")String height,
                    @Param("xingZuo")String xingZuo, @Param("signature")String signature);
 
+    /*搜索好友*/
+    List<User> findUser(String details);
+
 }
