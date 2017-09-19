@@ -3,9 +3,11 @@ package com.moviedateserver.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.moviedateserver.entity.Person;
 import com.moviedateserver.entity.Post;
 import com.moviedateserver.entity.PostList;
 import com.moviedateserver.entity.User;
+import com.moviedateserver.service.PersonService;
 import com.moviedateserver.service.PostService;
 import com.moviedateserver.service.UserService;
 import com.moviedateserver.utils.TimeUtil;
@@ -28,6 +30,8 @@ public class PostController {
     private PostService postService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private PersonService personService;
 
     /**
      * 添加帖子/更新
@@ -283,6 +287,249 @@ public class PostController {
         return null;
 
     }
+
+    /*
+    * 通过发帖人id查找帖子（查找我发起的约影功能使用）
+    * 且约影未完成的（即帖子endtime==null）
+    * */
+    @RequestMapping(value = "/findPostBypostPersonId")
+    public String findPostBypostPersonId(HttpServletRequest request, HttpServletResponse response)throws IOException {
+        PrintWriter out =null;
+        out = response.getWriter();
+        List<PostList> postListList=new ArrayList<PostList>();
+
+        String spostPersonId=request.getParameter("postPersonId");
+        int postPersonId=Integer.parseInt(spostPersonId);
+
+        List<Post> postList = postService.findPostBypostPersonId(postPersonId);
+        JSONArray jsonArray = new JSONArray();
+        if (postList != null && postList.size() > 0) {
+            List<PostList> postListS=new ArrayList<PostList>();
+            for (Post post : postList) {
+                User user=userService.findUserById(post.getPostPersonId());
+                if(user!=null){
+                    PostList postlist=new PostList();
+                    postlist.setId(post.getId());
+                    postlist.setDetails(post.getDetails());
+                    postlist.setEndTime(post.getEndTime());
+                    postlist.setMovieName(post.getMovieName());
+                    postlist.setMovieTime(post.getMovieTime());
+                    postlist.setMovieType(post.getMovieType());
+                    postlist.setSite(post.getSite());
+                    postlist.setSex(post.getSex());
+                    postlist.setPostTime(post.getPostTime());
+                    postlist.setPostPersonId(post.getPostPersonId());
+                    postlist.setName(user.getName());
+                    postlist.setNickname(user.getNickname());
+                    postlist.setGender(user.getGender());
+                    if (postlist.getEndTime()==null) {
+                        postListS.add(postlist);
+                    }
+                }
+            }
+            if(postListS!=null&&postListS.size()>0){
+                for (int i= postListS.size()-1;i>=0;i--){
+                    postListList.add(postListS.get(i));
+                    System.out.println("collectlistList====" + postListList);
+                    //json数组转换方法
+                    JSONObject jsonObj = (JSONObject) JSON.toJSON(postListS.get(i));
+                    jsonArray.add(jsonObj);
+                }
+                out.print(jsonArray.toString());
+
+            }else {
+                out.print("null");
+            }
+
+
+        }else {
+            //获取到数据为空时，向APP传输没有找到数据的信号
+            out.print("nodata");
+        }
+
+        out.flush();
+        out.close();
+        return null;//这里返回空就行
+    }
+
+
+    /*
+    * 通过发帖人id查找帖子（查找我参与的约影功能使用）
+    * 且约影未完成的（即帖子endtime==null）
+    * */
+    @RequestMapping(value = "/findPostByjoin")
+    public String findPostByjoin(HttpServletRequest request, HttpServletResponse response)throws IOException {
+        PrintWriter out =null;
+        out = response.getWriter();
+        List<PostList> postListList=new ArrayList<PostList>();
+
+        String sbyPersonId=request.getParameter("byPersonId");
+        int byPersonId=Integer.parseInt(sbyPersonId);
+
+        List<Person> personList = personService.findPersonBybyPersonId(byPersonId);
+        JSONArray jsonArray = new JSONArray();
+        if (personList != null && personList.size() > 0) {
+            List<PostList> postListS=new ArrayList<PostList>();
+            for (Person person : personList) {
+                Post post=postService.findPostByid(person.getPostId());
+                if(post!=null){
+                    User user=userService.findUserById(post.getPostPersonId());
+                    if (user!=null)
+                    {
+                        PostList postlist=new PostList();
+                        postlist.setId(post.getId());
+                        postlist.setDetails(post.getDetails());
+                        postlist.setEndTime(post.getEndTime());
+                        postlist.setMovieName(post.getMovieName());
+                        postlist.setMovieTime(post.getMovieTime());
+                        postlist.setMovieType(post.getMovieType());
+                        postlist.setSite(post.getSite());
+                        postlist.setSex(post.getSex());
+                        postlist.setPostTime(post.getPostTime());
+                        postlist.setPostPersonId(post.getPostPersonId());
+                        postlist.setName(user.getName());
+                        postlist.setNickname(user.getNickname());
+                        postlist.setGender(user.getGender());
+                        if (postlist.getEndTime()==null) {
+                            postListS.add(postlist);
+                        }
+                    }
+                    else {
+                        out.print("usernull");
+                    }
+
+                }
+                else {
+                    out.print("postnull");
+                }
+            }
+            if(postListS!=null&&postListS.size()>0){
+                for (int i= postListS.size()-1;i>=0;i--){
+                    postListList.add(postListS.get(i));
+                    System.out.println("collectlistList====" + postListList);
+                    //json数组转换方法
+                    JSONObject jsonObj = (JSONObject) JSON.toJSON(postListS.get(i));
+                    jsonArray.add(jsonObj);
+                }
+                out.print(jsonArray.toString());
+
+            }else {
+                out.print("postListS.size="+postListS.size());
+                out.print("null");
+            }
+        }else {
+            //获取到数据为空时，向APP传输没有找到数据的信号
+            out.print("nodata");
+        }
+
+        out.flush();
+        out.close();
+        return null;//这里返回空就行
+    }
+
+     /*
+    * 通过发帖人id查找帖子（查找历史约影功能）
+    * 且约影未完成的（即帖子endtime==null）
+    * */
+     @RequestMapping(value = "/findPostByhistory")
+     public String findPostByhistory(HttpServletRequest request, HttpServletResponse response)throws IOException {
+
+         List<PostList> postListList=new ArrayList<PostList>();
+         PrintWriter out =null;
+         out = response.getWriter();
+
+         String sbyPersonId=request.getParameter("byPersonId");
+         int byPersonId=Integer.parseInt(sbyPersonId);
+
+         List<PostList> postListS = new ArrayList<PostList>();
+         //查找自己发起的
+         List<Post> postList = postService.findPostBypostPersonId(byPersonId);
+         JSONArray jsonArray = new JSONArray();
+         if (postList != null && postList.size() > 0) {
+
+             for (Post post : postList) {
+                 User user = userService.findUserById(post.getPostPersonId());
+                 if (user != null) {
+                     PostList postlist = new PostList();
+                     postlist.setId(post.getId());
+                     postlist.setDetails(post.getDetails());
+                     postlist.setEndTime(post.getEndTime());
+                     postlist.setMovieName(post.getMovieName());
+                     postlist.setMovieTime(post.getMovieTime());
+                     postlist.setMovieType(post.getMovieType());
+                     postlist.setSite(post.getSite());
+                     postlist.setSex(post.getSex());
+                     postlist.setPostTime(post.getPostTime());
+                     postlist.setPostPersonId(post.getPostPersonId());
+                     postlist.setName(user.getName());
+                     postlist.setNickname(user.getNickname());
+                     postlist.setGender(user.getGender());
+                     if (postlist.getEndTime() == null) {
+                         postListS.add(postlist);
+                     }
+                 }
+             }
+         }
+
+         //查找参与他人的
+         List<Person> personList = personService.findPersonBybyPersonId(byPersonId);
+         if (personList != null && personList.size() > 0) {
+             for (Person person : personList) {
+                 Post post=postService.findPostByid(person.getPostId());
+                 if(post!=null){
+                     User user=userService.findUserById(post.getPostPersonId());
+                     if (user!=null)
+                     {
+                         PostList postlist=new PostList();
+                         postlist.setId(post.getId());
+                         postlist.setDetails(post.getDetails());
+                         postlist.setEndTime(post.getEndTime());
+                         postlist.setMovieName(post.getMovieName());
+                         postlist.setMovieTime(post.getMovieTime());
+                         postlist.setMovieType(post.getMovieType());
+                         postlist.setSite(post.getSite());
+                         postlist.setSex(post.getSex());
+                         postlist.setPostTime(post.getPostTime());
+                         postlist.setPostPersonId(post.getPostPersonId());
+                         postlist.setName(user.getName());
+                         postlist.setNickname(user.getNickname());
+                         postlist.setGender(user.getGender());
+                         if (postlist.getEndTime()==null) {
+                             postListS.add(postlist);
+                         }
+                     }
+                     else {
+                         out.print("usernull");
+                     }
+
+                 }
+                 else {
+                     out.print("postnull");
+                 }
+             }
+             if(postListS!=null&&postListS.size()>0){
+                 for (int i= postListS.size()-1;i>=0;i--){
+                     postListList.add(postListS.get(i));
+                     System.out.println("collectlistList====" + postListList);
+                     //json数组转换方法
+                     JSONObject jsonObj = (JSONObject) JSON.toJSON(postListS.get(i));
+                     jsonArray.add(jsonObj);
+                 }
+                 out.print(jsonArray.toString());
+
+             }else {
+                 out.print("postListS.size="+postListS.size());
+                 out.print("null");
+             }
+         }else {
+             //获取到数据为空时，向APP传输没有找到数据的信号
+             out.print("nodata");
+         }
+
+         out.flush();
+         out.close();
+         return null;//这里返回空就行
+     }
 
     /*
     * 查找所有的post

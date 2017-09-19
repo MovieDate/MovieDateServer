@@ -65,6 +65,11 @@
         FROM post_tab
         WHERE details=#{details};
     </select>
+    <select id="findPostBypostPersonId" resultType="Post" parameterType="int">
+        SELECT *
+        FROM post_tab
+        WHERE postPersonId=#{postPersonId};
+    </select>
 
     <select id="findposttab" resultType="Post" parameterType="String">
         SELECT *

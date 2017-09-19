@@ -16,4 +16,8 @@ public interface PersonService {
 
     /*通过postId和byPersonId验证是否已经报名约影*/
     List<Person> findPersobByPostpersonId(int postId, int byPersonId);
+
+    /*通过byPersonId查找约影*/
+    List<Person> findPersonBybyPersonId(int byPersonId);
+
 }

@@ -32,6 +32,9 @@ public class PersonServiceImpl implements PersonService {
         return personDao.findPersobByPostpersonId(postId,byPersonId);
     }
 
+    public List<Person> findPersonBybyPersonId(int byPersonId){
+        return personDao.findPersonBybyPersonId(byPersonId);
+    }
 
 
 }

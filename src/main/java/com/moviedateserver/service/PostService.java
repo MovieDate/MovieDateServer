@@ -39,4 +39,6 @@ public interface PostService {
 
     List<Post> findposttab(String details);
 
+    List<Post> findPostBypostPersonId(int postPersonId);
+
 }

@@ -45,6 +45,10 @@ public interface PostDao {
 
     List<Post> findposttab(String details);
 
+    List<Post> findPostBypostPersonId(int postPersonId);
+
+
+
 
 
 }

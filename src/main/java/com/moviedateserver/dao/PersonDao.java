@@ -17,4 +17,8 @@ public interface PersonDao {
     List<Person> findPersonByPostId(int postId);
 
     List<Person> findPersobByPostpersonId(@Param("postId")int postId,@Param("byPersonId")int byPersonId);
+
+    /*通过byPersonId查找约影*/
+    List<Person> findPersonBybyPersonId(int byPersonId);
+
 }

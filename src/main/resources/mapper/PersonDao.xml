@@ -32,4 +32,11 @@
         WHERE postId=#{postId} AND byPersonId=#{byPersonId};
     </select>
 
+    <!--通过byPersonId查找约影-->
+    <select id="findPersonBybyPersonId" resultType="Person" parameterType="int">
+        SELECT *
+        FROM person_tab
+        WHERE byPersonId=#{byPersonId};
+    </select>
+
 </mapper>
