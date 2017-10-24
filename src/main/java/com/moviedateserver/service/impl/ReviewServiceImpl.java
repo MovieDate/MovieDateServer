@@ -21,13 +21,14 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewDao.updateReviewByPostId(postId,postPersonId,reviewDetails);
     }
 
-    public int deleteReviewByReviewDetails(String reviewDetails,int postPersonId) {
-        return reviewDao.deleteReviewByReviewDetails(reviewDetails,postPersonId);
+    public int deleteReviewByReviewDetails(int postId,int postPersonId,String reviewDetails,String reviewTime) {
+        return reviewDao.deleteReviewByReviewDetails(postId,postPersonId,reviewDetails,reviewTime);
     }
 
-    public List<Review> findReviewByReviewDetails(String reviewDetails) {
-        return reviewDao.findReviewByReviewDetails(reviewDetails);
+    public Review findReviewidByReviewall(int postId, int postPersonId, String reviewDetails, String reviewTime) {
+        return reviewDao.findReviewidByReviewall(postId,postPersonId,reviewDetails,reviewTime);
     }
+
 
     public List<Review> findReviewByPostId(int postId) {
         return reviewDao.findReviewByPostId(postId);

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.View;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -29,6 +28,7 @@ public class ReviewController {
     private ReviewService reviewService;
     @Autowired
     private UserService userService;
+
 
     /**
      * 添加評論（点击添加按钮)
@@ -91,7 +91,7 @@ public class ReviewController {
     * @throws IOException
     * */
 
-    @RequestMapping(value = "/updateReviewByPostId")
+   /* @RequestMapping(value = "/updateReviewByPostId")
     public String updateReviewByPostId(HttpServletRequest request, HttpServletResponse response)
             throws IOException{
 
@@ -126,11 +126,10 @@ public class ReviewController {
 
 
         return null;
-    }
+    }*/
 
 
-    /*
-    * 删除評論
+    /** 删除評論
     * 1.reviewList！=null,已添加，可点击删除按钮
     * 2.reviewList==null,未添加
     * @param request
@@ -144,26 +143,29 @@ public class ReviewController {
         PrintWriter out =null;
         out = response.getWriter();
 
-        String spostPersonId= request.getParameter("postPersonId");
+        String spostId= request.getParameter("postId");
+        int postId =Integer.parseInt(spostId);
+        String spostPersonId =request.getParameter("postPersonId");
         int postPersonId =Integer.parseInt(spostPersonId);
         String reviewDetails=request.getParameter("reviewDetails");
+        String reviewTime = request.getParameter("reviewTime");
 
-        System.out.println("postPersonId="+spostPersonId+" reviewDetails="+reviewDetails);
+        System.out.println("postId"+postId+"postPersonId="+spostPersonId+" reviewDetails="+reviewDetails+"reviewTime="+reviewTime);
 
-        List<Review> reviewList=reviewService.findReviewByReviewDetails(reviewDetails);
+      /*  Review review=reviewService.findReviewidByReviewall(postId,postPersonId,reviewDetails,reviewTime);
 
+        out.print("review="+review);*/
+        /*if (review != null) {*/
 
-        if (reviewList != null && reviewList.size() > 0) {
-
-            int delFlag = reviewService.deleteReviewByReviewDetails(reviewDetails,postPersonId);
+            int delFlag = reviewService.deleteReviewByReviewDetails(postId,postPersonId,reviewDetails,reviewTime);
             if (delFlag == 1) {
                 System.out.println("刪除成功");
-
+                System.out.println("刪除成功");
                 out.print("del_success");
             }
-        } else {
+        /*} */else {
             //获取到数据为空时，向APP传输没有找到数据的信号
-            out.print("nodata");
+            out.print("nodata"+delFlag);
 
         }
 
@@ -171,7 +173,6 @@ public class ReviewController {
         out.close();
         return null;
     }
-
 
     /**
      * 查找評論
@@ -182,20 +183,23 @@ public class ReviewController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/findReviewByReviewDetails")
-    public String findReviewByReviewDetails(HttpServletRequest request,HttpServletResponse response)throws IOException{
+    @RequestMapping(value = "/findReviewidByReviewall")
+    public String findReviewidByReviewall(HttpServletRequest request,HttpServletResponse response)throws IOException{
 
         PrintWriter out=null;
         out = response.getWriter();
 
+        String spostId= request.getParameter("postId");
+        int postId =Integer.parseInt(spostId);
+        String spostPersonId =request.getParameter("postPersonId");
+        int postPersonId =Integer.parseInt(spostPersonId);
         String reviewDetails=request.getParameter("reviewDetails");
+        String reviewTime = request.getParameter("reviewTime");
 
-        List<Review> reviewList=reviewService.findReviewByReviewDetails(reviewDetails);
-        if (reviewList != null && reviewList.size() > 0) {
+        Review review=reviewService.findReviewidByReviewall(postId,postPersonId,reviewDetails,reviewTime);
+        if (review != null) {
             JSONObject jsonObject = new JSONObject();
-            String reviewJson = jsonObject.toJSONString(reviewList);
-
-            System.out.println("review====" + reviewList);
+            String reviewJson = jsonObject.toJSONString(review);
             System.out.println("reviewJson====" + reviewJson);
 
             //获取到的数据传过去APP端
@@ -204,11 +208,9 @@ public class ReviewController {
             //获取到数据为空时，向APP传输没有找到数据的信号
             out.print("nodata");
         }
-
         out.flush();
         out.close();
         return null;
-
     }
 
     @RequestMapping(value = "/findReviewByPostId")

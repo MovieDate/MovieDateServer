@@ -50,4 +50,8 @@ public class PostServiceImpl implements PostService {
     public List<Post> findPostBypostPersonId(int postPersonId) {
         return postDao.findPostBypostPersonId(postPersonId);
     }
+
+    public int updatePostEndTimeById(int id,String endTime) {
+        return postDao.updatePostEndTimeById(id,endTime);
+    }
 }

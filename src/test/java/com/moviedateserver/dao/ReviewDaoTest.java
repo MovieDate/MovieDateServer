@@ -32,15 +32,15 @@ public class ReviewDaoTest {
 
     @Test
     public void deleteReviewByReviewDetails() throws Exception {
-        int deleteAmount = reviewDao.deleteReviewByReviewDetails("评论",2);
+        int deleteAmount = reviewDao.deleteReviewByReviewDetails(7,1,"101010","2017-09-03 16:31:59");
         System.out.println("操作后返回删除的数目：" + deleteAmount);
     }
 
-    @Test
+    /*@Test
     public void findReviewByReviewDetails() throws Exception {
         List<Review> reviewList = reviewDao.findReviewByReviewDetails("评论");
         System.out.println("user===" + reviewList);
-    }
+    }*/
 
 
 

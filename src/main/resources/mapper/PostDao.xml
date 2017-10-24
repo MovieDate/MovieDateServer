@@ -11,6 +11,14 @@
             例如：int reduceNumber(@Param("seckillId") long seckillId, @Param("killTime") Date killTime);-->
     <!--注意：增删改查对应相应的标签，更新操作对应update标签，插入对应insert，查找对应select，删除对应delete-->
 
+    <!--添加完成约影时间进去-->
+    <update id="updatePostEndTimeById">
+        <!--具体SQL语句-->
+        UPDATE post_tab
+        SET endTime = #{endTime}
+        WHERE id=#{id};
+    </update>
+
     <!--查找所有post，并按postTime排序好-->
     <select id="findAllPost" resultType="Post">
         SELECT *

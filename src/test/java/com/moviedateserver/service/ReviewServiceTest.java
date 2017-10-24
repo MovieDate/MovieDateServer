@@ -18,6 +18,7 @@ public class ReviewServiceTest {
     @Autowired
     private ReviewService reviewService;
 
+
     @Test
     public void addUserReviewByPostId() throws Exception {
         int addAmount = reviewService.addUserReviewByPostId(1,2,"评论","20150202");
@@ -32,13 +33,13 @@ public class ReviewServiceTest {
 
     @Test
     public void deleteReviewByReviewDetails() throws Exception {
-        int deleteAmount = reviewService.deleteReviewByReviewDetails("评论",2);
+        int deleteAmount = reviewService.deleteReviewByReviewDetails(1,2,"评论2","2015-02-02 00:00:00");
         System.out.println("操作后返回删除的数目：" + deleteAmount);
     }
 
-    @Test
+    /*@Test
     public void findReviewByReviewDetails() throws Exception {
         List<Review> reviewList = reviewService.findReviewByReviewDetails("评论");
         System.out.println("user===" + reviewList);
-    }
+    }*/
 }

@@ -41,4 +41,7 @@ public interface PostService {
 
     List<Post> findPostBypostPersonId(int postPersonId);
 
+    /*添加完成约影时间进去*/
+    int updatePostEndTimeById(int id,String endTime);
+
 }

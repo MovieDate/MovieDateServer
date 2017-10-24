@@ -26,24 +26,26 @@
     </update>
 
     <!--通过 reviewDetails删除评论-->
-    <delete id="deleteReviewByReviewDetails" parameterType="String">
+    <delete id="deleteReviewByReviewDetails" >
         <!--具体SQL语句-->
-        DELETE FROM review_tab
-        WHERE reviewDetails=#{reviewDetails} AND postPersonId=#{postPersonId};
+        DELETE
+        FROM review_tab
+        WHERE postId=#{postId} AND postPersonId=#{postPersonId} AND reviewDetails=#{reviewDetails} AND reviewTime=#{reviewTime};
     </delete>
 
     <!--通过reviewDetails 查询信息 -->
-    <select id="findReviewByReviewDetails" resultType="Review" parameterType="String">
+    <select id="findReviewidByReviewall" resultType="Review" >
         SELECT *
         FROM review_tab
-        WHERE reviewDetails=#{reviewDetails};
+        WHERE postId=#{postId} AND postPersonId=#{postPersonId} AND reviewDetails=#{reviewDetails} AND reviewTime=#{reviewTime};
     </select>
 
     <!--通过帖子id搜索该帖子的所有评论-->
     <select id="findReviewByPostId" resultType="Review" parameterType="int">
         SELECT *
         FROM review_tab
-        WHERE postId=#{postId};
+        WHERE postId=#{postId}
+        ORDER BY reviewTime DESC;
     </select>
 
 </mapper>

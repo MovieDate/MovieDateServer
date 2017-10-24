@@ -90,6 +90,31 @@ public class PostController {
         return null;
     }
 
+    /*添加完成约影时间*/
+    @RequestMapping(value = "/updatePostEndTimeById")
+    public String updatePostEndTimeById(HttpServletRequest request, HttpServletResponse response)throws IOException{
+        PrintWriter out =null;
+        out = response.getWriter();
+
+        String sid=request.getParameter("id");
+        int id=Integer.parseInt(sid);
+        //时间不用从APP那边获取，都是后台这边统一处理，
+        // 这样时间才不会因为网络延迟或者每个客户端的系统时间不同而出现时间计算标准不一样
+        String endTime = TimeUtil.dateToString(new Date());
+
+        int upaFlag=postService.updatePostEndTimeById(id,endTime);
+        if(upaFlag==1){
+            System.out.println("更新成功");
+            out.print("update_success");
+        }else {
+            out.print("update_failed");
+
+        }
+        out.flush();
+        out.close();
+        return null;
+    }
+
     /**
      * 更新帖子
      * 是否添加？
