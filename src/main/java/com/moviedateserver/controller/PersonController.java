@@ -65,10 +65,7 @@ public class PersonController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         List<Person> personList=personService.findPersonByPostId(postId);
-
-
         if (personList == null || personList.size() == 0) {
 
             int addFlag = personService.addPersonByPostId(postId, startPersonId, byPersonId,personTime);
@@ -93,9 +90,7 @@ public class PersonController {
             }else {
                  out.print("ending");
             }
-
         }
-
         out.flush();
         out.close();
 
@@ -158,6 +153,96 @@ public class PersonController {
         out.close();
         return null;
 
+    }
+
+    /*
+    * 验证是否已经报名
+    * */
+    @RequestMapping(value = "/findPersobByPostpersonId")
+    public String findPersobByPostpersonId(HttpServletRequest request,HttpServletResponse response)throws IOException{
+        PrintWriter out=null;
+        out = response.getWriter();
+        String spostId= request.getParameter("postId");
+        int postId =Integer.parseInt(spostId);
+
+        String sbyPersonId= request.getParameter("byPersonId");
+        int byPersonId =Integer.parseInt(sbyPersonId);
+
+        System.out.println("postId="+postId+"byPersonId=="+byPersonId);
+        List<Person> personList1=personService.findPersobByPostpersonId(postId,byPersonId);
+        if (personList1.size()!=0){
+            out.print("hasbyin");
+        }else {
+            out.print("nobyin");
+        }
+        out.flush();
+        out.close();
+        return null;
+    }
+
+        /**
+         * 查找已添加约影人人数
+         *
+         */
+    @RequestMapping(value = "/findPersonCountByPostId")
+    public String findPersonCountByPostId(HttpServletRequest request,HttpServletResponse response)throws IOException{
+
+        PrintWriter out=null;
+        out = response.getWriter();
+
+        List<PersonList> personListList=new ArrayList<PersonList>();
+        String spostId= request.getParameter("postId");
+        int postId =Integer.parseInt(spostId);
+
+        JSONArray jsonArray = new JSONArray();
+
+        List<Person> personList=personService.findPersonByPostId(postId);
+        out =response.getWriter();
+        if (personList != null && personList.size() > 0) {
+            out.print(personList.size());
+        } else {
+            //获取到数据为空时，向APP传输没有找到数据的信号
+            out.print(personList.size());
+        }
+
+        out.flush();
+        out.close();
+        return null;
+
+    }
+
+    /*
+    * 取消约影
+    *
+    * */
+    @RequestMapping(value = "/deletePersonByPostpersonId")
+    public String deletePersonByPostpersonId(HttpServletRequest request,HttpServletResponse response)throws IOException{
+        PrintWriter out=null;
+        out = response.getWriter();
+
+        String spostId =request.getParameter("postId");
+        int postId =Integer.parseInt(spostId);
+        String sbyPersonId =request.getParameter("byPersonId");
+        int byPersonId =Integer.parseInt(sbyPersonId);
+
+        List<Person> personList1=personService.findPersobByPostpersonId(postId,byPersonId);
+        if (personList1 != null || personList1.size() > 0) {
+            int deleteFlag = personService.deletePersonByPostpersonId(postId, byPersonId);
+            if (deleteFlag == 1) {
+                //获取到的数据传过去APP端
+                out.print("delete_success");
+            } else {
+                //获取到数据为空时，向APP传输没有找到数据的信号
+                out.print("nodata");
+            }
+        }else {
+            out.print("error");
+        }
+
+
+        out.flush();
+        out.close();
+        return null;
     }
 
 }

@@ -21,4 +21,7 @@ public interface PersonDao {
     /*通过byPersonId查找约影*/
     List<Person> findPersonBybyPersonId(int byPersonId);
 
+    /*通过postId和byPersonId取消约影*/
+    int deletePersonByPostpersonId(@Param("postId")int postId,@Param("byPersonId")int byPersonId);
+
 }

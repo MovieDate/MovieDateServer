@@ -3,6 +3,8 @@ package com.moviedateserver.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.moviedateserver.entity.Post;
+import com.moviedateserver.entity.PostList;
 import com.moviedateserver.entity.User;
 import com.moviedateserver.service.UserService;
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
@@ -18,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -348,6 +352,38 @@ public class UserController {
         out.close();
         return null;
     }
+
+    /*模糊搜索*/
+    @RequestMapping(value = "/findUser")
+    public String findposttab(HttpServletRequest request,HttpServletResponse response)throws IOException {
+
+        PrintWriter out = null;
+        out = response.getWriter();
+        String details = request.getParameter("details");
+        List<User> userList = userService.findUser(details);
+        if (userList != null && userList.size() > 0) {
+            //将List转换成json数据
+            JSONArray jsonArray = new JSONArray();
+            for (User user : userList) {
+                JSONObject jsonObj = (JSONObject) JSON.toJSON(user);
+                jsonArray.add(jsonObj);
+            }
+
+            System.out.println("userList===="+userList);
+            System.out.println("jsonArry===="+jsonArray);
+            //获取到数据不为空时，向APP传输UserList的json数据
+            out.print(jsonArray.toString());
+
+        }else {
+            //获取到数据为空时，向APP传输没有找到数据的信号
+            out.print("nodata");
+        }
+
+        out.flush();
+        out.close();
+        return null;//这里返回空就行
+    }
+
 
 
 

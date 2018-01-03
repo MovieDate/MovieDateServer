@@ -31,5 +31,11 @@
         FROM collect_tab
         WHERE postId=#{postId} AND collecterId=#{collecterId} ;
     </select>
+    
+    <delete id="deleteCollect" parameterType="int">
+        DELETE FROM collect_tab
+        WHERE postId=#{postId} AND collecterId=#{collecterId} ;
+
+    </delete>
 
 </mapper>

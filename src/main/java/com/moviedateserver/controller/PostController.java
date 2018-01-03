@@ -19,9 +19,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.SimpleTimeZone;
 
 @Controller
 @RequestMapping("/postController")
@@ -334,6 +336,8 @@ public class PostController {
                 User user=userService.findUserById(post.getPostPersonId());
                 if(user!=null){
                     PostList postlist=new PostList();
+                    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("MM-dd HH:mm");
+                    String date=simpleDateFormat.format(post.getPostTime());
                     postlist.setId(post.getId());
                     postlist.setDetails(post.getDetails());
                     postlist.setEndTime(post.getEndTime());
@@ -342,7 +346,7 @@ public class PostController {
                     postlist.setMovieType(post.getMovieType());
                     postlist.setSite(post.getSite());
                     postlist.setSex(post.getSex());
-                    postlist.setPostTime(post.getPostTime());
+                    postlist.setPostTime(date);
                     postlist.setPostPersonId(post.getPostPersonId());
                     postlist.setName(user.getName());
                     postlist.setNickname(user.getNickname());
@@ -402,6 +406,8 @@ public class PostController {
                     if (user!=null)
                     {
                         PostList postlist=new PostList();
+                        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("MM-dd HH:mm");
+                        String date=simpleDateFormat.format(post.getPostTime());
                         postlist.setId(post.getId());
                         postlist.setDetails(post.getDetails());
                         postlist.setEndTime(post.getEndTime());
@@ -410,7 +416,7 @@ public class PostController {
                         postlist.setMovieType(post.getMovieType());
                         postlist.setSite(post.getSite());
                         postlist.setSex(post.getSex());
-                        postlist.setPostTime(post.getPostTime());
+                        postlist.setPostTime(date);
                         postlist.setPostPersonId(post.getPostPersonId());
                         postlist.setName(user.getName());
                         postlist.setNickname(user.getNickname());
@@ -476,6 +482,8 @@ public class PostController {
                  User user = userService.findUserById(post.getPostPersonId());
                  if (user != null) {
                      PostList postlist = new PostList();
+                     SimpleDateFormat simpleDateFormat=new SimpleDateFormat("MM-dd HH:mm");
+                     String date=simpleDateFormat.format(post.getPostTime());
                      postlist.setId(post.getId());
                      postlist.setDetails(post.getDetails());
                      postlist.setEndTime(post.getEndTime());
@@ -484,7 +492,7 @@ public class PostController {
                      postlist.setMovieType(post.getMovieType());
                      postlist.setSite(post.getSite());
                      postlist.setSex(post.getSex());
-                     postlist.setPostTime(post.getPostTime());
+                     postlist.setPostTime(date);
                      postlist.setPostPersonId(post.getPostPersonId());
                      postlist.setName(user.getName());
                      postlist.setNickname(user.getNickname());
@@ -506,6 +514,8 @@ public class PostController {
                      if (user!=null)
                      {
                          PostList postlist=new PostList();
+                         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("MM-dd HH:mm");
+                         String date=simpleDateFormat.format(post.getPostTime());
                          postlist.setId(post.getId());
                          postlist.setDetails(post.getDetails());
                          postlist.setEndTime(post.getEndTime());
@@ -514,7 +524,7 @@ public class PostController {
                          postlist.setMovieType(post.getMovieType());
                          postlist.setSite(post.getSite());
                          postlist.setSex(post.getSex());
-                         postlist.setPostTime(post.getPostTime());
+                         postlist.setPostTime(date);
                          postlist.setPostPersonId(post.getPostPersonId());
                          postlist.setName(user.getName());
                          postlist.setNickname(user.getNickname());
@@ -572,6 +582,9 @@ public class PostController {
             for (Post post : postList) {
                 User user=userService.findUserById(post.getPostPersonId());
                 if(user!=null){
+                    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("MM-dd HH:mm");
+                    String date=simpleDateFormat.format(post.getPostTime());
+                    System.out.println("date="+date);
                     PostList postlist=new PostList();
                     postlist.setId(post.getId());
                     postlist.setDetails(post.getDetails());
@@ -581,13 +594,12 @@ public class PostController {
                     postlist.setMovieType(post.getMovieType());
                     postlist.setSite(post.getSite());
                     postlist.setSex(post.getSex());
-                    postlist.setPostTime(post.getPostTime());
+                    postlist.setPostTime(date);
                     postlist.setPostPersonId(post.getPostPersonId());
                     postlist.setName(user.getName());
                     postlist.setNickname(user.getNickname());
                     postlist.setGender(user.getGender());
                     postListS.add(postlist);
-
                 }
             }
             if(postListS!=null&&postListS.size()>0){
@@ -599,7 +611,6 @@ public class PostController {
                     jsonArray.add(jsonObj);
                 }
                 out.print(jsonArray.toString());
-
             }else {
                 out.print("null");
             }
@@ -633,6 +644,8 @@ public class PostController {
                 User user = userService.findUserById(post.getPostPersonId());
                 if (user != null) {
                     PostList postlist = new PostList();
+                    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("MM-dd HH:mm");
+                    String date=simpleDateFormat.format(post.getPostTime());
                     postlist.setId(post.getId());
                     postlist.setDetails(post.getDetails());
                     postlist.setEndTime(post.getEndTime());
@@ -641,7 +654,7 @@ public class PostController {
                     postlist.setMovieType(post.getMovieType());
                     postlist.setSite(post.getSite());
                     postlist.setSex(post.getSex());
-                    postlist.setPostTime(post.getPostTime());
+                    postlist.setPostTime(date);
                     postlist.setPostPersonId(post.getPostPersonId());
                     postlist.setName(user.getName());
                     postlist.setNickname(user.getNickname());

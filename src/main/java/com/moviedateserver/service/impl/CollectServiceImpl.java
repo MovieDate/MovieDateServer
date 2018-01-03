@@ -25,4 +25,8 @@ public class CollectServiceImpl implements CollectService{
     public Collect findCollectByCollectPostId(int postId,int collecterId) {
         return collectDao.findCollectByCollectPostId(postId,collecterId);
     }
+
+    public int deleteCollect(int postId, int collecterId) {
+        return collectDao.deleteCollect(postId,collecterId);
+    }
 }

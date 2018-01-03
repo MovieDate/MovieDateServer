@@ -248,10 +248,30 @@ public class ReviewController {
             }
             //获取到的数据传过去APP端
             out.print(jsonArray.toString());
+            //out.print(reviewList.size());
         } else {
             //获取到数据为空时，向APP传输没有找到数据的信号
             out.print("nodata");
         }
+        out.flush();
+        out.close();
+        return null;
+    }
+
+    @RequestMapping(value = "/findReviewCountByPostId")
+    public String findReviewCountByPostId(HttpServletResponse response,HttpServletRequest request)throws IOException{
+        PrintWriter out=null;
+        out = response.getWriter();
+
+        List<ReviewList> reviewListList=new ArrayList<ReviewList>();
+        String spostId= request.getParameter("postId");
+        int postId =Integer.parseInt(spostId);
+
+        JSONArray jsonArray = new JSONArray();
+        List<Review> reviewList=reviewService.findReviewByPostId(postId);
+
+        out.print(reviewList.size());
+
         out.flush();
         out.close();
         return null;

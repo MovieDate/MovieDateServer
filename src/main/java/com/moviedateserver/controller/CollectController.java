@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -154,13 +155,23 @@ public class CollectController {
                 Post post= postService.findPostByid(collect.getPostId());
                 if (post!=null){
                     CollectList collectlist = new CollectList();
+                    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("MM-dd HH:mm");
+                    String date=simpleDateFormat.format(post.getPostTime());
+                    String collectDate=simpleDateFormat.format(collect.getCollectTime());
                     //给collectlist类赋值
                     collectlist.setPostId(post.getId());
                     collectlist.setPostPersonId(post.getPostPersonId());
-                    collectlist.setMovieName(post.getMovieName());
+                    collectlist.setCollectTime(collectDate);
+                    collectlist.setPostTime(date);
                     collectlist.setSite(post.getSite());
+                    collectlist.setMovieName(post.getMovieName());
+                    collectlist.setMovieTime(post.getMovieTime());
+                    collectlist.setSex(post.getSex());
+                    collectlist.setEndTime(post.getEndTime());
+                    collectlist.setMovieType(post.getMovieType());
                     collectlist.setDetails(post.getDetails());
-                    collectlist.setCollectTime(collect.getCollectTime());
+
+
                     User user=userService.findUserById(post.getPostPersonId());
                     if (user!=null){
                         collectlist.setName(user.getName());
@@ -226,10 +237,48 @@ public class CollectController {
             System.out.println("collectJson====" + collectJson);
 
             //获取到的数据传过去APP端
-            out.print(collectJson);
+            out.print("collected");
         } else {
             //获取到数据为空时，向APP传输没有找到数据的信号
             out.print("nodata");
+        }
+
+
+        out.flush();
+        out.close();
+        return null;
+    }
+
+    /**
+     * 取消收藏帖子
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/deleteCollect")
+    public String deleteCollect(HttpServletRequest request,HttpServletResponse response)throws IOException{
+        PrintWriter out=null;
+        out = response.getWriter();
+
+        String spostId =request.getParameter("postId");
+        int postId =Integer.parseInt(spostId);
+        String scollecterId =request.getParameter("collecterId");
+        int collecterId =Integer.parseInt(scollecterId);
+
+        Collect collect = new Collect();
+        collect = collectService.findCollectByCollectPostId(postId,collecterId);
+        if (collect !=null) {
+            int collectFlag = collectService.deleteCollect(postId, collecterId);
+            if (collectFlag == 1) {
+                //获取到的数据传过去APP端
+                out.print("delete_success");
+            } else {
+                //获取到数据为空时，向APP传输没有找到数据的信号
+                out.print("nodata");
+            }
+        }else {
+            out.print("error");
         }
 
 

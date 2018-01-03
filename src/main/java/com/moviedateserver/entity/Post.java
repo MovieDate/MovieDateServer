@@ -1,9 +1,11 @@
 package com.moviedateserver.entity;
 
+import java.util.Date;
+
 public class Post {
     private int id;      //自动编号,自增长
     private int postPersonId;    //发帖人的id
-    private String postTime;       //发帖时间
+    private Date postTime;       //发帖时间
     private String site;        //地点
     private String movieName;     //约影的影片名字
     private String movieTime;     //约影时间
@@ -31,11 +33,11 @@ public class Post {
         this.postPersonId = postPersonId;
     }
 
-    public String getPostTime() {
+    public Date getPostTime() {
         return postTime;
     }
 
-    public void setPostTime(String postTime) {
+    public void setPostTime(Date postTime) {
         this.postTime = postTime;
     }
 

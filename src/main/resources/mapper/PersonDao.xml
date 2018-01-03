@@ -39,4 +39,11 @@
         WHERE byPersonId=#{byPersonId};
     </select>
 
+    <!--通过postId和byPersonId取消约影-->
+    <delete id="deletePersonByPostpersonId"  parameterType="int">
+        DELETE
+        FROM person_tab
+        WHERE postId=#{postId} AND byPersonId=#{byPersonId};
+    </delete>
+
 </mapper>

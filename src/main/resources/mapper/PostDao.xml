@@ -23,6 +23,7 @@
     <select id="findAllPost" resultType="Post">
         SELECT *
         FROM post_tab
+        WHERE endTime IS NULL;
     </select>
 
     <!--通过 addPostByPostpersonid 来添加 -->

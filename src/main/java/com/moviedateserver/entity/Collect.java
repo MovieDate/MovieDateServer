@@ -1,10 +1,12 @@
 package com.moviedateserver.entity;
 
+import java.util.Date;
+
 public class Collect {
     private int id;      //自动编号,自增长
     private int postId;  //帖子id
     private int collecterId;   //收藏人id
-    private String collectTime;//收藏时间
+    private Date collectTime;//收藏时间
 
     public int getId() {
         return id;
@@ -30,11 +32,11 @@ public class Collect {
         this.collecterId = collecterId;
     }
 
-    public String getCollectTime() {
+    public Date getCollectTime() {
         return collectTime;
     }
 
-    public void setCollectTime(String collectTime) {
+    public void setCollectTime(Date collectTime) {
         this.collectTime = collectTime;
     }
 

@@ -36,5 +36,9 @@ public class PersonServiceImpl implements PersonService {
         return personDao.findPersonBybyPersonId(byPersonId);
     }
 
+    public int deletePersonByPostpersonId(int postId, int byPersonId) {
+        return personDao.deletePersonByPostpersonId(postId,byPersonId);
+    }
+
 
 }
